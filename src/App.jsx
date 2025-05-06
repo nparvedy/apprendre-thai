@@ -192,7 +192,15 @@ function App() {
   };
 
   const handleTyping = (e) => {
-    if (typingExercise.wordCompleted) return;
+    if (typingExercise.wordCompleted) {
+      // Si le mot est déjà complété et que l'utilisateur appuie sur Tab, Entrée ou Espace
+      if (e.key === 'Tab' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault(); // Empêcher le comportement par défaut (important pour Tab)
+        getNextWord();
+        return;
+      }
+      return;
+    }
     
     // Gérer l'appui ou le relâchement de la touche MAJ
     if (e.key === 'Shift') {
