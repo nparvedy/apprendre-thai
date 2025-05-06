@@ -98,6 +98,7 @@ function App() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [showAnswer, setShowAnswer] = useState(false)
   const [completedLessons, setCompletedLessons] = useState([])
+  const [isShiftPressed, setIsShiftPressed] = useState(false)
   const [typingExercise, setTypingExercise] = useState({
     currentWord: {},
     userInput: '',
@@ -193,8 +194,9 @@ function App() {
   const handleTyping = (e) => {
     if (typingExercise.wordCompleted) return;
     
-    // Ignorer l'appui sur la touche MAJ seule
+    // Gérer l'appui ou le relâchement de la touche MAJ
     if (e.key === 'Shift') {
+      setIsShiftPressed(e.type === 'keydown');
       return;
     }
     
@@ -298,9 +300,31 @@ function App() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Shift') {
+      setIsShiftPressed(true);
+    }
+  };
+  
+  const handleKeyUp = (e) => {
+    if (e.key === 'Shift') {
+      setIsShiftPressed(false);
+    }
+  };
+
   useEffect(() => {
     if (currentView === 'typingExercise' && inputRef.current) {
       inputRef.current.focus();
+      
+      // Ajouter des écouteurs d'événements pour les touches MAJ
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+      
+      // Nettoyer les écouteurs lors du démontage
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('keyup', handleKeyUp);
+      };
     }
   }, [currentView, typingExercise]);
 
@@ -575,7 +599,7 @@ function App() {
               {/* Indicateur de la touche Maj à gauche */}
               <div className="flex flex-col justify-center items-center">
                 <div className={`key w-16 mb-2 p-2 rounded border ${
-                  keyboardHighlight && keyboardHighlight.shift 
+                  isShiftPressed || (keyboardHighlight && keyboardHighlight.shift)
                     ? 'bg-primary text-white font-bold animate-pulse' 
                     : 'bg-base-200'
                 }`}>
@@ -584,7 +608,7 @@ function App() {
                     <div className="text-xs">(Shift)</div>
                   </div>
                 </div>
-                {keyboardHighlight && keyboardHighlight.shift && (
+                {(isShiftPressed || (keyboardHighlight && keyboardHighlight.shift)) && (
                   <div className="text-xs text-center text-primary font-bold">
                     Maintenir <br/>enfoncée
                   </div>
@@ -593,46 +617,39 @@ function App() {
               
               {/* Clavier principal qui change selon qu'on doive utiliser Shift ou non */}
               <div className="flex-1 flex flex-col gap-2">
-                {['row1', 'row2', 'row3', 'row4'].map(rowName => (
-                  <div key={rowName} className="flex justify-center gap-1">
-                    {/* Pour chaque touche, vérifier si on a besoin de la version "shift" */}
-                    {thaiKeyboard[rowName].map((key, index) => {
-                      // Déterminer si cette touche est celle à saisir actuellement
-                      const isHighlighted = keyboardHighlight && 
-                        ((keyboardHighlight.row === rowName && keyboardHighlight.index === index && !keyboardHighlight.shift) ||
-                         (keyboardHighlight.row === 'shift' + rowName && keyboardHighlight.index === index && keyboardHighlight.shift));
-                      
-                      // Déterminer quelle touche afficher (normale ou avec shift)
-                      const shiftRowName = 'shift' + rowName;
-                      const displayKey = keyboardHighlight && keyboardHighlight.shift && 
-                                      thaiKeyboard[shiftRowName] && 
-                                      thaiKeyboard[shiftRowName][index] ? 
-                                      thaiKeyboard[shiftRowName][index] : key;
-                      
-                      return (
-                        <div 
-                          key={index} 
-                          className={`key w-10 h-10 flex flex-col items-center justify-center rounded border ${
-                            isHighlighted
-                              ? 'bg-primary text-white font-bold' 
-                              : 'bg-base-200'
-                          }`}
-                        >
-                          <div className="text-sm font-bold">
-                            {keyboardHighlight && keyboardHighlight.shift && thaiKeyboard[shiftRowName] && thaiKeyboard[shiftRowName][index] 
-                              ? thaiKeyboard[shiftRowName][index].thai 
-                              : key.thai}
+                {(isShiftPressed ? ['shiftRow1', 'shiftRow2', 'shiftRow3', 'shiftRow4'] : ['row1', 'row2', 'row3', 'row4']).map((rowName, rowIndex) => {
+                  const baseRowName = isShiftPressed ? rowName.replace('shift', '') : rowName;
+                  const displayRowName = isShiftPressed ? rowName : rowName;
+                  
+                  return (
+                    <div key={rowName} className="flex justify-center gap-1">
+                      {thaiKeyboard[displayRowName].map((key, index) => {
+                        // Déterminer si cette touche est celle à saisir actuellement
+                        const isHighlighted = keyboardHighlight && 
+                          ((isShiftPressed && keyboardHighlight.shift && keyboardHighlight.row.replace('shift', '') === baseRowName && keyboardHighlight.index === index) ||
+                          (!isShiftPressed && !keyboardHighlight.shift && keyboardHighlight.row === rowName && keyboardHighlight.index === index));
+                        
+                        return (
+                          <div 
+                            key={index} 
+                            className={`key w-10 h-10 flex flex-col items-center justify-center rounded border ${
+                              isHighlighted
+                                ? 'bg-primary text-white font-bold' 
+                                : 'bg-base-200'
+                            }`}
+                          >
+                            <div className="text-sm font-bold">
+                              {key.thai}
+                            </div>
+                            <div className="text-xs opacity-70">
+                              {key.latin}
+                            </div>
                           </div>
-                          <div className="text-xs opacity-70">
-                            {keyboardHighlight && keyboardHighlight.shift && thaiKeyboard[shiftRowName] && thaiKeyboard[shiftRowName][index]
-                              ? thaiKeyboard[shiftRowName][index].latin
-                              : key.latin}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
+                        );
+                      })}
+                    </div>
+                  );
+                })}
                 
                 {/* Barre d'espace */}
                 <div className="flex justify-center mt-2">
