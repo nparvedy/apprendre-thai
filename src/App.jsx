@@ -2,12 +2,29 @@ import React, { useState, useEffect, useRef } from 'react'
 import './style.css'
 import thaiLessons from './data/thaiLessons'
 
+// Fonctions utilitaires pour la sauvegarde de la progression
+const saveProgressToLocalStorage = (data) => {
+  try {
+    localStorage.setItem('thaiLearningProgress', JSON.stringify(data));
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde de la progression:', error);
+  }
+};
+
+const loadProgressFromLocalStorage = () => {
+  try {
+    const savedData = localStorage.getItem('thaiLearningProgress');
+    return savedData ? JSON.parse(savedData) : null;
+  } catch (error) {
+    console.error('Erreur lors du chargement de la progression:', error);
+    return null;
+  }
+};
+
 function App() {
   const [currentTheme, setCurrentTheme] = useState('light')
   const [currentView, setCurrentView] = useState('home')
   const [selectedLesson, setSelectedLesson] = useState(null)
-
-  // Données d'exemples pour les leçons - Les données sont maintenant importées depuis thaiLessons.js
 
   // Mettre à jour le clavier thaï avec les bonnes correspondances AZERTY
   const thaiKeyboard = {
@@ -62,11 +79,13 @@ function App() {
     space: { thai: ' ', latin: 'espace', shift: false }
   };
 
+  const [completedLessons, setCompletedLessons] = useState(loadProgressFromLocalStorage()?.completedLessons || [])
+  const [lessonStats, setLessonStats] = useState(loadProgressFromLocalStorage()?.lessonStats || {})
+  const [isShiftPressed, setIsShiftPressed] = useState(false)
+
   const [flashcardMode, setFlashcardMode] = useState('thai') // 'thai', 'phonetic' ou 'french'
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [showAnswer, setShowAnswer] = useState(false)
-  const [completedLessons, setCompletedLessons] = useState([])
-  const [isShiftPressed, setIsShiftPressed] = useState(false)
   const [typingExercise, setTypingExercise] = useState({
     currentWord: {},
     userInput: '',
@@ -81,6 +100,13 @@ function App() {
   });
 
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    saveProgressToLocalStorage({
+      completedLessons,
+      lessonStats
+    });
+  }, [completedLessons, lessonStats]);
 
   const toggleTheme = () => {
     setCurrentTheme(currentTheme === 'light' ? 'retro' : 'light')
@@ -101,7 +127,27 @@ function App() {
     } else {
       // Fin de la leçon
       if (!completedLessons.includes(selectedLesson.id)) {
-        setCompletedLessons([...completedLessons, selectedLesson.id])
+        const updatedLessons = [...completedLessons, selectedLesson.id];
+        setCompletedLessons(updatedLessons);
+
+        // Mettre à jour les statistiques
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0]; // Format YYYY-MM-DD
+
+        setLessonStats(prevStats => {
+          const lessonId = selectedLesson.id.toString();
+          const prevLessonStats = prevStats[lessonId] || { completions: 0, lastCompleted: null, dates: [] };
+
+          return {
+            ...prevStats,
+            [lessonId]: {
+              ...prevLessonStats,
+              completions: prevLessonStats.completions + 1,
+              lastCompleted: dateStr,
+              dates: [...(prevLessonStats.dates || []), dateStr]
+            }
+          };
+        });
       }
       setCurrentView('congratulations')
     }
@@ -114,11 +160,11 @@ function App() {
 
   const initTypingExercise = () => {
     if (!selectedLesson || selectedLesson.words.length === 0) return;
-    
+
     const randomIndex = Math.floor(Math.random() * selectedLesson.words.length);
     const word = selectedLesson.words[randomIndex];
     const targetKeys = word.thai.split('');
-    
+
     setTypingExercise({
       currentWord: word,
       userInput: '',
@@ -142,7 +188,7 @@ function App() {
         }
       }
     }
-    
+
     for (const rowName of ['shiftRow1', 'shiftRow2', 'shiftRow3', 'shiftRow4']) {
       if (Array.isArray(thaiKeyboard[rowName])) {
         const keyIndex = thaiKeyboard[rowName].findIndex(key => key.thai === thaiChar);
@@ -151,11 +197,11 @@ function App() {
         }
       }
     }
-    
+
     if (thaiChar === ' ') {
       return { row: 'space', index: 0, shift: false };
     }
-    
+
     return null;
   };
 
@@ -169,34 +215,34 @@ function App() {
       }
       return;
     }
-    
+
     // Gérer l'appui ou le relâchement de la touche MAJ
     if (e.key === 'Shift') {
       setIsShiftPressed(e.type === 'keydown');
       return;
     }
-    
+
     const { targetKeys, currentKeyIndex } = typingExercise;
     const pressedKey = e.key;
     const pressedCode = e.code;
     const targetChar = targetKeys[currentKeyIndex];
     const highlight = typingExercise.keyboardHighlight;
-    
+
     // Pour le débogage
     console.log('Touche pressée:', e.key, 'Code:', e.code, 'Shift:', e.shiftKey);
-    
+
     let keyMatches = false;
-    
+
     if (highlight) {
       const rowName = highlight.row;
       const keyIndex = highlight.index;
       const requiresShift = highlight.shift;
-      
+
       if (rowName === 'space') {
         keyMatches = pressedKey === ' ';
       } else {
         const keyObj = thaiKeyboard[rowName][keyIndex];
-        
+
         // Cas spéciaux pour différentes touches
         if (keyObj.latin === ')' && pressedKey === ')') {
           keyMatches = true;
@@ -219,7 +265,7 @@ function App() {
         // Gestion normale pour les touches avec/sans Shift
         else if (requiresShift) {
           keyMatches = pressedKey.toLowerCase() === keyObj.latin.toLowerCase() && e.shiftKey;
-          
+
           if (pressedKey.toLowerCase() === keyObj.latin.toLowerCase() && !e.shiftKey) {
             setTypingExercise({
               ...typingExercise,
@@ -228,10 +274,10 @@ function App() {
             });
             return;
           }
-        } 
+        }
         else {
           keyMatches = pressedKey.toLowerCase() === keyObj.latin.toLowerCase() && !e.shiftKey;
-          
+
           if (pressedKey.toLowerCase() === keyObj.latin.toLowerCase() && e.shiftKey) {
             setTypingExercise({
               ...typingExercise,
@@ -243,12 +289,12 @@ function App() {
         }
       }
     }
-    
+
     if (keyMatches) {
       const newInput = typingExercise.userInput + targetChar;
       const newKeyIndex = currentKeyIndex + 1;
       const isCompleted = newKeyIndex >= targetKeys.length;
-      
+
       setTypingExercise({
         ...typingExercise,
         userInput: newInput,
@@ -258,14 +304,14 @@ function App() {
         isCorrect: true,
         errorMessage: ''
       });
-      
+
     } else if (!typingExercise.errorMessage) {
       setTypingExercise({
         ...typingExercise,
         isCorrect: false,
         errorMessage: 'Touche incorrecte, réessayez'
       });
-      
+
       setTimeout(() => {
         setTypingExercise(prev => ({
           ...prev,
@@ -281,7 +327,7 @@ function App() {
       setIsShiftPressed(true);
     }
   };
-  
+
   const handleKeyUp = (e) => {
     if (e.key === 'Shift') {
       setIsShiftPressed(false);
@@ -291,11 +337,11 @@ function App() {
   useEffect(() => {
     if (currentView === 'typingExercise' && inputRef.current) {
       inputRef.current.focus();
-      
+
       // Ajouter des écouteurs d'événements pour les touches MAJ
       window.addEventListener('keydown', handleKeyDown);
       window.addEventListener('keyup', handleKeyUp);
-      
+
       // Nettoyer les écouteurs lors du démontage
       return () => {
         window.removeEventListener('keydown', handleKeyDown);
@@ -315,8 +361,112 @@ function App() {
     setCurrentView('typingExercise');
   };
 
+  const completeTypingExercise = () => {
+    if (!selectedLesson) return;
+
+    // Mettre à jour les statistiques
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0]; // Format YYYY-MM-DD
+
+    setLessonStats(prevStats => {
+      const lessonId = selectedLesson.id.toString();
+      const prevLessonStats = prevStats[lessonId] || {
+        completions: 0,
+        lastCompleted: null,
+        dates: [],
+        typing: { attempts: 0, successes: 0 }
+      };
+
+      const typing = prevLessonStats.typing || { attempts: 0, successes: 0 };
+
+      return {
+        ...prevStats,
+        [lessonId]: {
+          ...prevLessonStats,
+          typing: {
+            attempts: typing.attempts + 1,
+            successes: typing.successes + 1
+          },
+          lastCompleted: dateStr,
+          dates: [...(prevLessonStats.dates || []), dateStr]
+        }
+      };
+    });
+
+    // Si la leçon n'est pas encore marquée comme terminée, la marquer maintenant
+    if (!completedLessons.includes(selectedLesson.id)) {
+      setCompletedLessons([...completedLessons, selectedLesson.id]);
+    }
+  };
+
   const getNextWord = () => {
+    completeTypingExercise();
     initTypingExercise();
+  };
+
+  const calculateGlobalStats = () => {
+    const totalLessons = thaiLessons.length;
+    const completedCount = completedLessons.length;
+    const completionPercentage = Math.round((completedCount / totalLessons) * 100);
+
+    let totalWords = 0;
+    thaiLessons.forEach(lesson => {
+      totalWords += lesson.words.length;
+    });
+
+    let learnedWords = 0;
+    completedLessons.forEach(lessonId => {
+      const lesson = thaiLessons.find(l => l.id === lessonId);
+      if (lesson) {
+        learnedWords += lesson.words.length;
+      }
+    });
+
+    const wordsPercentage = Math.round((learnedWords / totalWords) * 100);
+
+    let lastActivity = null;
+    Object.values(lessonStats).forEach(stat => {
+      if (stat.lastCompleted && (!lastActivity || stat.lastCompleted > lastActivity)) {
+        lastActivity = stat.lastCompleted;
+      }
+    });
+
+    let streak = 0;
+    if (Object.values(lessonStats).length > 0) {
+      const allDates = new Set();
+      Object.values(lessonStats).forEach(stat => {
+        if (stat.dates && Array.isArray(stat.dates)) {
+          stat.dates.forEach(date => allDates.add(date));
+        }
+      });
+
+      const sortedDates = Array.from(allDates).sort().reverse();
+
+      if (sortedDates.length > 0) {
+        const today = new Date().toISOString().split('T')[0];
+        let currentStreak = 0;
+        let currentDate = today;
+
+        while (allDates.has(currentDate)) {
+          currentStreak++;
+          const prevDate = new Date(new Date(currentDate).getTime() - 86400000);
+          currentDate = prevDate.toISOString().split('T')[0];
+        }
+
+        streak = currentStreak;
+      }
+    }
+
+    return {
+      totalLessons,
+      completedCount,
+      completionPercentage,
+      totalWords,
+      learnedWords,
+      wordsPercentage,
+      lastActivity,
+      streak
+    };
   };
 
   const renderHome = () => (
@@ -329,7 +479,7 @@ function App() {
           </div>
         </div>
       </div>
-      
+
       <h2 className="text-2xl font-bold mb-4">Choisissez une leçon</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {thaiLessons.map(lesson => (
@@ -363,10 +513,10 @@ function App() {
 
   const renderLesson = () => {
     if (!selectedLesson) return null
-    
+
     const currentWord = selectedLesson.words[currentCardIndex]
     const progress = ((currentCardIndex + 1) / selectedLesson.words.length) * 100
-    
+
     return (
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-6">
@@ -378,24 +528,24 @@ function App() {
             <span className="badge badge-outline">{currentCardIndex + 1}/{selectedLesson.words.length}</span>
           </div>
         </div>
-        
+
         <progress className="progress progress-primary w-full mb-6" value={progress} max="100"></progress>
-        
+
         <div className="flex justify-center mb-6">
           <div className="btn-group">
-            <button 
+            <button
               className={`btn ${flashcardMode === 'thai' ? 'btn-active' : ''}`}
               onClick={() => changeFlashcardMode('thai')}
             >
               Thaï
             </button>
-            <button 
+            <button
               className={`btn ${flashcardMode === 'phonetic' ? 'btn-active' : ''}`}
               onClick={() => changeFlashcardMode('phonetic')}
             >
               Phonétique
             </button>
-            <button 
+            <button
               className={`btn ${flashcardMode === 'french' ? 'btn-active' : ''}`}
               onClick={() => changeFlashcardMode('french')}
             >
@@ -403,7 +553,7 @@ function App() {
             </button>
           </div>
         </div>
-        
+
         <div className="card bg-base-100 shadow-xl mb-6 h-64 cursor-pointer" onClick={() => setShowAnswer(!showAnswer)}>
           <div className="card-body flex items-center justify-center">
             {flashcardMode === 'thai' ? (
@@ -437,22 +587,22 @@ function App() {
                 )}
               </>
             )}
-            
+
             {!showAnswer && (
               <div className="text-sm opacity-50">Cliquer pour révéler</div>
             )}
           </div>
         </div>
-        
+
         <div className="flex justify-between">
-          <button 
+          <button
             className="btn btn-outline"
             onClick={() => setShowAnswer(!showAnswer)}
           >
             {showAnswer ? "Masquer" : "Révéler"}
           </button>
-          <button 
-            className="btn btn-primary" 
+          <button
+            className="btn btn-primary"
             onClick={nextCard}
           >
             {currentCardIndex < selectedLesson.words.length - 1 ? "Suivant" : "Terminer"}
@@ -470,14 +620,14 @@ function App() {
             <h1 className="text-4xl font-bold mb-4">🎉 Félicitations !</h1>
             <p className="text-lg mb-6">Vous avez terminé la leçon "{selectedLesson?.title}"</p>
             <div className="space-y-4">
-              <button 
-                className="btn btn-primary w-full" 
+              <button
+                className="btn btn-primary w-full"
                 onClick={() => setCurrentView('home')}
               >
                 Retour à l'accueil
               </button>
-              <button 
-                className="btn btn-outline w-full" 
+              <button
+                className="btn btn-outline w-full"
                 onClick={() => {
                   setCurrentCardIndex(0)
                   setShowAnswer(false)
@@ -495,10 +645,10 @@ function App() {
 
   const renderTypingExercise = () => {
     if (!selectedLesson || !typingExercise.currentWord) return null;
-    
+
     const { currentWord, userInput, targetKeys, currentKeyIndex, keyboardHighlight, wordCompleted, isCorrect, errorMessage } = typingExercise;
     const progress = targetKeys.length > 0 ? (currentKeyIndex / targetKeys.length) * 100 : 0;
-    
+
     return (
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-6">
@@ -508,20 +658,20 @@ function App() {
           <h2 className="text-2xl font-bold">Exercice de saisie - {selectedLesson.title}</h2>
           <div></div>
         </div>
-        
+
         <progress className="progress progress-primary w-full mb-6" value={progress} max="100"></progress>
-        
+
         <div className="card bg-base-100 shadow-xl mb-8 p-6">
           <div className="card-body text-center">
             <div className="text-lg mb-2">Écrivez ce mot :</div>
-            
+
             <div className="flex justify-center gap-4 mb-4">
               <div className="badge badge-lg">{currentWord.phonetic}</div>
               <div className="badge badge-lg badge-neutral">{currentWord.french}</div>
             </div>
-            
+
             <div className="text-2xl text-base-content opacity-50 mb-6">{currentWord.thai}</div>
-            
+
             <div className="flex flex-col gap-4 items-center">
               <div className="text-4xl font-bold min-h-16">
                 {wordCompleted ? (
@@ -533,7 +683,7 @@ function App() {
                   </>
                 )}
               </div>
-              
+
               <input
                 ref={inputRef}
                 type="text"
@@ -542,12 +692,12 @@ function App() {
                 onKeyDown={handleTyping}
                 onBlur={() => inputRef.current && inputRef.current.focus()}
               />
-              
+
               {errorMessage && (
                 <div className="badge badge-error mt-2">{errorMessage}</div>
               )}
             </div>
-            
+
             {wordCompleted && (
               <button className="btn btn-success mt-4" onClick={getNextWord}>
                 Mot suivant
@@ -555,11 +705,11 @@ function App() {
             )}
           </div>
         </div>
-        
+
         <div className="card bg-base-100 shadow-xl mb-6">
           <div className="card-body">
             <h3 className="card-title mb-4">Clavier d'aide</h3>
-            
+
             {keyboardHighlight && (
               <div className="alert alert-info mb-4">
                 <div>
@@ -571,13 +721,12 @@ function App() {
                 </div>
               </div>
             )}
-            
+
             <div className="flex gap-4">
-              {/* Indicateur de la touche Maj à gauche */}
               <div className="flex flex-col justify-center items-center">
                 <div className={`key w-16 mb-2 p-2 rounded border ${
                   isShiftPressed || (keyboardHighlight && keyboardHighlight.shift)
-                    ? 'bg-primary text-white font-bold animate-pulse' 
+                    ? 'bg-primary text-white font-bold animate-pulse'
                     : 'bg-base-200'
                 }`}>
                   <div className="text-center">
@@ -591,27 +740,25 @@ function App() {
                   </div>
                 )}
               </div>
-              
-              {/* Clavier principal qui change selon qu'on doive utiliser Shift ou non */}
+
               <div className="flex-1 flex flex-col gap-2">
                 {(isShiftPressed ? ['shiftRow1', 'shiftRow2', 'shiftRow3', 'shiftRow4'] : ['row1', 'row2', 'row3', 'row4']).map((rowName, rowIndex) => {
                   const baseRowName = isShiftPressed ? rowName.replace('shift', '') : rowName;
                   const displayRowName = isShiftPressed ? rowName : rowName;
-                  
+
                   return (
                     <div key={rowName} className="flex justify-center gap-1">
                       {thaiKeyboard[displayRowName].map((key, index) => {
-                        // Déterminer si cette touche est celle à saisir actuellement
-                        const isHighlighted = keyboardHighlight && 
+                        const isHighlighted = keyboardHighlight &&
                           ((isShiftPressed && keyboardHighlight.shift && keyboardHighlight.row.replace('shift', '') === baseRowName && keyboardHighlight.index === index) ||
                           (!isShiftPressed && !keyboardHighlight.shift && keyboardHighlight.row === rowName && keyboardHighlight.index === index));
-                        
+
                         return (
-                          <div 
-                            key={index} 
+                          <div
+                            key={index}
                             className={`key w-10 h-10 flex flex-col items-center justify-center rounded border ${
                               isHighlighted
-                                ? 'bg-primary text-white font-bold' 
+                                ? 'bg-primary text-white font-bold'
                                 : 'bg-base-200'
                             }`}
                           >
@@ -627,13 +774,12 @@ function App() {
                     </div>
                   );
                 })}
-                
-                {/* Barre d'espace */}
+
                 <div className="flex justify-center mt-2">
-                  <div 
+                  <div
                     className={`key key-space px-6 py-2 rounded border ${
-                      keyboardHighlight && keyboardHighlight.row === 'space' 
-                        ? 'bg-primary text-white font-bold' 
+                      keyboardHighlight && keyboardHighlight.row === 'space'
+                        ? 'bg-primary text-white font-bold'
                         : 'bg-base-200'
                     }`}
                   >
@@ -642,9 +788,145 @@ function App() {
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-4 text-sm text-center opacity-70">
               Utilisez votre clavier pour taper les touches correspondant aux caractères thaï indiqués en surbrillance
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderStats = () => {
+    const stats = calculateGlobalStats();
+
+    return (
+      <div className="container mx-auto p-4">
+        <div className="flex justify-between items-center mb-6">
+          <button className="btn btn-ghost" onClick={() => setCurrentView('home')}>
+            ← Retour
+          </button>
+          <h2 className="text-2xl font-bold">Statistiques d'apprentissage</h2>
+          <div></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title flex items-center mb-4">
+                <span className="text-2xl mr-2">📊</span>
+                Progression générale
+              </h3>
+
+              <div className="stats stats-vertical shadow w-full">
+                <div className="stat">
+                  <div className="stat-title">Leçons terminées</div>
+                  <div className="stat-value">{stats.completedCount} / {stats.totalLessons}</div>
+                  <div className="stat-desc">
+                    <progress
+                      className="progress progress-primary w-full"
+                      value={stats.completionPercentage}
+                      max="100"
+                    ></progress>
+                    <span className="text-right block">{stats.completionPercentage}%</span>
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-title">Mots appris</div>
+                  <div className="stat-value">{stats.learnedWords} / {stats.totalWords}</div>
+                  <div className="stat-desc">
+                    <progress
+                      className="progress progress-accent w-full"
+                      value={stats.wordsPercentage}
+                      max="100"
+                    ></progress>
+                    <span className="text-right block">{stats.wordsPercentage}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title flex items-center mb-4">
+                <span className="text-2xl mr-2">🔥</span>
+                Assiduité
+              </h3>
+
+              <div className="stats stats-vertical shadow w-full">
+                <div className="stat">
+                  <div className="stat-title">Séquence actuelle</div>
+                  <div className="stat-value text-primary">{stats.streak} {stats.streak <= 1 ? 'jour' : 'jours'}</div>
+                  <div className="stat-desc">Continuez à apprendre chaque jour !</div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-title">Dernière activité</div>
+                  <div className="stat-value text-secondary">
+                    {stats.lastActivity ? new Date(stats.lastActivity).toLocaleDateString('fr-FR') : 'Aucune'}
+                  </div>
+                  <div className="stat-desc">
+                    {stats.lastActivity && new Date(stats.lastActivity).toISOString().split('T')[0] === new Date().toISOString().split('T')[0]
+                      ? "Aujourd'hui"
+                      : "Revenez demain pour maintenir votre séquence !"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card bg-base-100 shadow-xl col-span-1 md:col-span-2">
+            <div className="card-body">
+              <h3 className="card-title flex items-center mb-4">
+                <span className="text-2xl mr-2">📝</span>
+                Détail par leçon
+              </h3>
+
+              <div className="overflow-x-auto">
+                <table className="table w-full">
+                  <thead>
+                    <tr>
+                      <th>Leçon</th>
+                      <th>Statut</th>
+                      <th>Exercices terminés</th>
+                      <th>Dernière pratique</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {thaiLessons.map(lesson => {
+                      const lessonStat = lessonStats[lesson.id] || {};
+                      const isCompleted = completedLessons.includes(lesson.id);
+                      return (
+                        <tr key={lesson.id} className={isCompleted ? 'bg-success bg-opacity-10' : ''}>
+                          <td className="flex items-center gap-2">
+                            <span>{lesson.icon}</span>
+                            <span>{lesson.title}</span>
+                          </td>
+                          <td>
+                            {isCompleted
+                              ? <span className="badge badge-success">Terminé</span>
+                              : <span className="badge badge-ghost">À faire</span>
+                            }
+                          </td>
+                          <td>
+                            {lessonStat.completions || 0}
+                            {lessonStat.typing && <span className="text-xs opacity-70"> (dont {lessonStat.typing.successes || 0} exercices de saisie)</span>}
+                          </td>
+                          <td>
+                            {lessonStat.lastCompleted
+                              ? new Date(lessonStat.lastCompleted).toLocaleDateString('fr-FR')
+                              : '-'
+                            }
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -662,6 +944,8 @@ function App() {
         return renderCongratulations()
       case 'typingExercise':
         return renderTypingExercise()
+      case 'stats':
+        return renderStats()
       default:
         return renderHome()
     }
@@ -676,6 +960,9 @@ function App() {
           </button>
         </div>
         <div className="flex-none">
+          <button className="btn btn-ghost btn-circle" onClick={() => setCurrentView('stats')}>
+            📊
+          </button>
           <button className="btn btn-ghost btn-circle" onClick={toggleTheme}>
             {currentTheme === 'light' ? '🌙' : '☀️'}
           </button>
