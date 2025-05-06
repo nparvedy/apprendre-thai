@@ -1,45 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './style.css'
+import thaiLessons from './data/thaiLessons'
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState('light')
   const [currentView, setCurrentView] = useState('home')
   const [selectedLesson, setSelectedLesson] = useState(null)
 
-  // Données d'exemples pour les leçons
-  const lessons = [
-    {
-      id: 1,
-      title: 'Salutations de base',
-      words: [
-        { thai: 'สวัสดี', phonetic: 'sà-wàt-dee', french: 'Bonjour' },
-        { thai: 'ขอบคุณ', phonetic: 'kɔ̀ɔp-kun', french: 'Merci' },
-        { thai: 'คุณสบายดีไหม', phonetic: 'kun-sà-baai-dee-măi', french: 'Comment allez-vous ?' },
-        { thai: 'สบายดี', phonetic: 'sà-baai-dee', french: 'Je vais bien' }
-      ]
-    },
-    {
-      id: 2,
-      title: 'Nourriture',
-      words: [
-        { thai: 'อาหาร', phonetic: 'aa-hǎan', french: 'Nourriture' },
-        { thai: 'ข้าว', phonetic: 'kâao', french: 'Riz' },
-        { thai: 'น้ำ', phonetic: 'náam', french: 'Eau' },
-        { thai: 'อร่อย', phonetic: 'à-rɔ̀ɔi', french: 'Délicieux' }
-      ]
-    },
-    {
-      id: 3,
-      title: 'Chiffres',
-      words: [
-        { thai: 'หนึ่ง', phonetic: 'nèung', french: 'Un' },
-        { thai: 'สอง', phonetic: 'sɔ̌ɔng', french: 'Deux' },
-        { thai: 'สาม', phonetic: 'sǎam', french: 'Trois' },
-        { thai: 'สี่', phonetic: 'sìi', french: 'Quatre' },
-        { thai: 'ห้า', phonetic: 'hâa', french: 'Cinq' }
-      ]
-    }
-  ]
+  // Données d'exemples pour les leçons - Les données sont maintenant importées depuis thaiLessons.js
 
   // Mettre à jour le clavier thaï avec les bonnes correspondances AZERTY
   const thaiKeyboard = {
@@ -364,10 +332,11 @@ function App() {
       
       <h2 className="text-2xl font-bold mb-4">Choisissez une leçon</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {lessons.map(lesson => (
+        {thaiLessons.map(lesson => (
           <div key={lesson.id} className="card bg-base-100 shadow-xl">
             <div className="card-body">
               <h2 className="card-title">
+                <span className="text-2xl mr-2">{lesson.icon}</span>
                 {lesson.title}
                 {completedLessons.includes(lesson.id) && (
                   <div className="badge badge-success">Terminé</div>
