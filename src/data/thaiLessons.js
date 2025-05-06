@@ -243,4 +243,106 @@ const thaiLessons = [
   }
 ];
 
-export default thaiLessons;
+/**
+ * Liste des phrases courantes en thaï
+ * Organisée par catégories avec phonétique et traduction française
+ */
+const thaiPhrases = [
+  {
+    id: 1,
+    title: 'Conversation de base',
+    icon: '💬',
+    words: [
+      { thai: 'คุณพูดภาษาอังกฤษได้ไหม', phonetic: 'khun-phûut-phaa-sǎa-ang-krìt-dâi-mǎi', french: 'Parlez-vous anglais ?' },
+      { thai: 'คุณชื่ออะไร', phonetic: 'khun-chʉ̂ʉ-à-rai', french: 'Comment vous appelez-vous ?' },
+      { thai: 'ฉันชื่อ...', phonetic: 'chǎn-chʉ̂ʉ...', french: 'Je m\'appelle...' },
+      { thai: 'ดีใจที่ได้รู้จัก', phonetic: 'dii-jai-thîi-dâi-rúu-jàk', french: 'Enchanté(e) de faire votre connaissance' },
+      { thai: 'คุณมาจากไหน', phonetic: 'khun-maa-jàak-nǎi', french: 'D\'où venez-vous ?' },
+      { thai: 'ฉันมาจากฝรั่งเศส', phonetic: 'chǎn-maa-jàak-fà-ràng-sèet', french: 'Je viens de France' },
+      { thai: 'คุณอายุเท่าไหร่', phonetic: 'khun-aa-yú-thâo-rài', french: 'Quel âge avez-vous ?' },
+      { thai: 'ฉันอายุ... ปี', phonetic: 'chǎn-aa-yú... pii', french: 'J\'ai ... ans' },
+      { thai: 'คุณทำงานอะไร', phonetic: 'khun-tham-ngaan-à-rai', french: 'Que faites-vous comme travail ?' },
+      { thai: 'ฉันเข้าใจ', phonetic: 'chǎn-khâo-jai', french: 'Je comprends' },
+      { thai: 'ฉันไม่เข้าใจ', phonetic: 'chǎn-mâi-khâo-jai', french: 'Je ne comprends pas' },
+      { thai: 'ช่วยพูดช้าๆ ได้ไหม', phonetic: 'chûai-phûut-cháa-cháa-dâi-mǎi', french: 'Pouvez-vous parler plus lentement ?' }
+    ]
+  },
+  {
+    id: 2,
+    title: 'Au restaurant',
+    icon: '🍽️',
+    words: [
+      { thai: 'โต๊ะสำหรับ... คน', phonetic: 'tó-sǎm-ràp... khon', french: 'Une table pour ... personnes' },
+      { thai: 'เมนูมีไหม', phonetic: 'mee-nuu-mii-mǎi', french: 'Avez-vous un menu ?' },
+      { thai: 'ขอดูเมนูหน่อย', phonetic: 'khɔ̌ɔ-duu-mee-nuu-nɔ̀i', french: 'Je voudrais voir le menu' },
+      { thai: 'มีอาหารแนะนำอะไรบ้าง', phonetic: 'mii-aa-hǎan-nɛ́-nam-à-rai-bâang', french: 'Avez-vous des spécialités ?' },
+      { thai: 'ผมขอสั่งอาหาร', phonetic: 'phǒm-khɔ̌ɔ-sàng-aa-hǎan', french: 'Je voudrais commander (homme)' },
+      { thai: 'ดิฉันขอสั่งอาหาร', phonetic: 'di-chǎn-khɔ̌ɔ-sàng-aa-hǎan', french: 'Je voudrais commander (femme)' },
+      { thai: 'ขอน้ำเปล่า', phonetic: 'khɔ̌ɔ-náam-plào', french: 'De l\'eau plate, s\'il vous plaît' },
+      { thai: 'อาหารอร่อยมาก', phonetic: 'aa-hǎan-à-rɔ̀i-mâak', french: 'Le repas est délicieux' },
+      { thai: 'เผ็ดเกินไป', phonetic: 'phèt-gəən-pai', french: 'C\'est trop épicé' },
+      { thai: 'ขอเช็คบิลด้วย', phonetic: 'khɔ̌ɔ-chék-bin-dûai', french: 'L\'addition, s\'il vous plaît' },
+      { thai: 'รับบัตรเครดิตไหม', phonetic: 'ráp-bàt-khree-dìt-mǎi', french: 'Acceptez-vous les cartes de crédit ?' },
+      { thai: 'อาหารนี้มีอะไรบ้าง', phonetic: 'aa-hǎan-níi-mii-à-rai-bâang', french: 'Quels sont les ingrédients de ce plat ?' }
+    ]
+  },
+  {
+    id: 3,
+    title: 'Transport et directions',
+    icon: '🧭',
+    words: [
+      { thai: 'ไปที่นี่ได้ไหม', phonetic: 'pai-thîi-nîi-dâi-mǎi', french: 'Pouvez-vous m\'emmener à cet endroit ?' },
+      { thai: 'ที่นี่อยู่ไกลแค่ไหน', phonetic: 'thîi-nîi-yùu-klai-khɛ̂-nǎi', french: 'À quelle distance est cet endroit ?' },
+      { thai: 'นั่นอยู่ที่ไหน', phonetic: 'nân-yùu-thîi-nǎi', french: 'Où est-ce ?' },
+      { thai: 'ฉันหลงทาง', phonetic: 'chǎn-lǒng-thaang', french: 'Je suis perdu(e)' },
+      { thai: 'ตรงไป', phonetic: 'trong-pai', french: 'Allez tout droit' },
+      { thai: 'เลี้ยวซ้าย', phonetic: 'líao-sáai', french: 'Tournez à gauche' },
+      { thai: 'เลี้ยวขวา', phonetic: 'líao-khwǎa', french: 'Tournez à droite' },
+      { thai: 'รถเมล์ไปที่... ไหม', phonetic: 'rót-mee-pai-thîi... mǎi', french: 'Est-ce que ce bus va à... ?' },
+      { thai: 'รถไฟใต้ดินอยู่ที่ไหน', phonetic: 'rót-fai-tâi-din-yùu-thîi-nǎi', french: 'Où est la station de métro ?' },
+      { thai: 'ราคาเท่าไร', phonetic: 'raa-khaa-thâo-rai', french: 'Combien ça coûte ?' },
+      { thai: 'หยุดที่นี่', phonetic: 'yùt-thîi-nîi', french: 'Arrêtez-vous ici' },
+      { thai: 'ปั๊มน้ำมันอยู่ที่ไหน', phonetic: 'pám-náam-man-yùu-thîi-nǎi', french: 'Où est la station-service ?' }
+    ]
+  },
+  {
+    id: 4,
+    title: 'À l\'hôtel',
+    icon: '🏨',
+    words: [
+      { thai: 'ผมจองห้องไว้', phonetic: 'phǒm-jɔɔng-hɔ̂ng-wái', french: 'J\'ai une réservation (homme)' },
+      { thai: 'ดิฉันจองห้องไว้', phonetic: 'di-chǎn-jɔɔng-hɔ̂ng-wái', french: 'J\'ai une réservation (femme)' },
+      { thai: 'คืนละเท่าไหร่', phonetic: 'khʉʉn-lá-thâo-rài', french: 'Combien coûte la nuit ?' },
+      { thai: 'มีห้องว่างไหม', phonetic: 'mii-hɔ̂ng-wâang-mǎi', french: 'Avez-vous des chambres disponibles ?' },
+      { thai: 'มีอินเตอร์เน็ตไหม', phonetic: 'mii-in-təə-nét-mǎi', french: 'Y a-t-il du Wi-Fi ?' },
+      { thai: 'ที่จอดรถอยู่ที่ไหน', phonetic: 'thîi-jɔ̀ɔt-rót-yùu-thîi-nǎi', french: 'Où est le parking ?' },
+      { thai: 'กุญแจห้องหาย', phonetic: 'kun-jɛɛ-hɔ̂ng-hǎai', french: 'J\'ai perdu ma clé de chambre' },
+      { thai: 'เช็คเอาท์กี่โมง', phonetic: 'chék-ao-kìi-moong', french: 'À quelle heure est le check-out ?' },
+      { thai: 'ขอผ้าเช็ดตัวเพิ่ม', phonetic: 'khɔ̌ɔ-phâa-chét-tuua-phə̂əm', french: 'Je voudrais des serviettes supplémentaires' },
+      { thai: 'แอร์ไม่ทำงาน', phonetic: 'ɛɛ-mâi-tham-ngaan', french: 'La climatisation ne fonctionne pas' },
+      { thai: 'ห้องนี้เสียงดัง', phonetic: 'hɔ̂ng-níi-sǐang-dang', french: 'Cette chambre est bruyante' }
+    ]
+  },
+  {
+    id: 5,
+    title: 'Situations d\'urgence',
+    icon: '🆘',
+    words: [
+      { thai: 'ช่วยด้วย', phonetic: 'chûai-dûai', french: 'Au secours !' },
+      { thai: 'เรียกตำรวจ', phonetic: 'rîak-tam-rùat', french: 'Appelez la police' },
+      { thai: 'เรียกรถพยาบาล', phonetic: 'rîak-rót-phá-yaa-baan', french: 'Appelez une ambulance' },
+      { thai: 'ผมไม่สบาย', phonetic: 'phǒm-mâi-sà-baai', french: 'Je ne me sens pas bien (homme)' },
+      { thai: 'ดิฉันไม่สบาย', phonetic: 'di-chǎn-mâi-sà-baai', french: 'Je ne me sens pas bien (femme)' },
+      { thai: 'ผมเป็นโรคภูมิแพ้', phonetic: 'phǒm-pen-rôok-phuum-phɛ́ɛ', french: 'Je suis allergique (homme)' },
+      { thai: 'ดิฉันเป็นโรคภูมิแพ้', phonetic: 'di-chǎn-pen-rôok-phuum-phɛ́ɛ', french: 'Je suis allergique (femme)' },
+      { thai: 'คุณพูดภาษาอังกฤษได้ไหม', phonetic: 'khun-phûut-phaa-sǎa-ang-krìt-dâi-mǎi', french: 'Parlez-vous anglais ?' },
+      { thai: 'โทรศัพท์ของผมหาย', phonetic: 'thoo-rá-sàp-khɔ̌ɔng-phǒm-hǎai', french: 'J\'ai perdu mon téléphone (homme)' },
+      { thai: 'โทรศัพท์ของดิฉันหาย', phonetic: 'thoo-rá-sàp-khɔ̌ɔng-di-chǎn-hǎai', french: 'J\'ai perdu mon téléphone (femme)' },
+      { thai: 'ผมต้องการพูดกับสถานทูต', phonetic: 'phǒm-tɔ̂ng-kaan-phûut-kàp-sà-thǎan-thuut', french: 'Je dois contacter l\'ambassade (homme)' },
+      { thai: 'ดิฉันต้องการพูดกับสถานทูต', phonetic: 'di-chǎn-tɔ̂ng-kaan-phûut-kàp-sà-thǎan-thuut', french: 'Je dois contacter l\'ambassade (femme)' }
+    ]
+  }
+];
+
+// Exporter les deux collections
+export { thaiLessons, thaiPhrases };

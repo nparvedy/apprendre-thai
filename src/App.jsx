@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './style.css'
-import thaiLessons from './data/thaiLessons'
+import { thaiLessons, thaiPhrases } from './data/thaiLessons'
 
 // Fonctions utilitaires pour la sauvegarde de la progression
 const saveProgressToLocalStorage = (data) => {
@@ -25,6 +25,7 @@ function App() {
   const [currentTheme, setCurrentTheme] = useState('light')
   const [currentView, setCurrentView] = useState('home')
   const [selectedLesson, setSelectedLesson] = useState(null)
+  const [activeTab, setActiveTab] = useState('words') // Nouvel état pour gérer les onglets
 
   // État pour le nouvel exercice de mémorisation
   const [memoryExercise, setMemoryExercise] = useState({
@@ -672,35 +673,85 @@ function App() {
         </div>
       </div>
 
-      <h2 className="text-2xl font-bold mb-4">Choisissez une leçon</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {thaiLessons.map(lesson => (
-          <div key={lesson.id} className="card bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title">
-                <span className="text-2xl mr-2">{lesson.icon}</span>
-                {lesson.title}
-                {completedLessons.includes(lesson.id) && (
-                  <div className="badge badge-success">Terminé</div>
-                )}
-              </h2>
-              <p>{lesson.words.length} mots à apprendre</p>
-              <div className="card-actions justify-end">
-                <div className="dropdown dropdown-end">
-                  <div tabIndex={0} role="button" className="btn btn-primary">
-                    Choisir un exercice
+      <div className="tabs mb-4">
+        <button
+          className={`tab tab-bordered ${activeTab === 'words' ? 'tab-active' : ''}`}
+          onClick={() => setActiveTab('words')}
+        >
+          Mots
+        </button>
+        <button
+          className={`tab tab-bordered ${activeTab === 'phrases' ? 'tab-active' : ''}`}
+          onClick={() => setActiveTab('phrases')}
+        >
+          Phrases
+        </button>
+      </div>
+
+      {activeTab === 'words' && (
+        <>
+          <h2 className="text-2xl font-bold mb-4">Choisissez une leçon</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {thaiLessons.map(lesson => (
+              <div key={lesson.id} className="card bg-base-100 shadow-xl">
+                <div className="card-body">
+                  <h2 className="card-title">
+                    <span className="text-2xl mr-2">{lesson.icon}</span>
+                    {lesson.title}
+                    {completedLessons.includes(lesson.id) && (
+                      <div className="badge badge-success">Terminé</div>
+                    )}
+                  </h2>
+                  <p>{lesson.words.length} mots à apprendre</p>
+                  <div className="card-actions justify-end">
+                    <div className="dropdown dropdown-end">
+                      <div tabIndex={0} role="button" className="btn btn-primary">
+                        Choisir un exercice
+                      </div>
+                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><button onClick={() => startLesson(lesson)}>Flashcards</button></li>
+                        <li><button onClick={() => startTypingExercise(lesson)}>Exercice de saisie</button></li>
+                        <li><button onClick={() => startMemoryExercise(lesson)}>Exercice de mémorisation</button></li>
+                      </ul>
+                    </div>
                   </div>
-                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><button onClick={() => startLesson(lesson)}>Flashcards</button></li>
-                    <li><button onClick={() => startTypingExercise(lesson)}>Exercice de saisie</button></li>
-                    <li><button onClick={() => startMemoryExercise(lesson)}>Exercice de mémorisation</button></li>
-                  </ul>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
+
+      {activeTab === 'phrases' && (
+        <>
+          <h2 className="text-2xl font-bold mb-4">Choisissez une catégorie</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {thaiPhrases.map(category => (
+              <div key={category.id} className="card bg-base-100 shadow-xl">
+                <div className="card-body">
+                  <h2 className="card-title">
+                    <span className="text-2xl mr-2">{category.icon}</span>
+                    {category.title}
+                  </h2>
+                  <p>{category.words.length} phrases à apprendre</p>
+                  <div className="card-actions justify-end">
+                    <div className="dropdown dropdown-end">
+                      <div tabIndex={0} role="button" className="btn btn-primary">
+                        Choisir un exercice
+                      </div>
+                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><button onClick={() => startLesson(category)}>Flashcards</button></li>
+                        <li><button onClick={() => startTypingExercise(category)}>Exercice de saisie</button></li>
+                        <li><button onClick={() => startMemoryExercise(category)}>Exercice de mémorisation</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 
