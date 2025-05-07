@@ -421,9 +421,14 @@ function App() {
   };
 
   const calculateGlobalStats = () => {
+    // Statistiques pour les mots
     const totalLessons = thaiLessons.length;
-    const completedCount = completedLessons.length;
-    const completionPercentage = Math.round((completedCount / totalLessons) * 100);
+    const completedLessonIds = completedLessons.filter(id => {
+      const lesson = thaiLessons.find(l => l.id === id);
+      return lesson !== undefined;
+    });
+    const completedCount = completedLessonIds.length;
+    const completionPercentage = Math.round((completedCount / totalLessons) * 100) || 0;
 
     let totalWords = 0;
     thaiLessons.forEach(lesson => {
@@ -431,15 +436,57 @@ function App() {
     });
 
     let learnedWords = 0;
-    completedLessons.forEach(lessonId => {
+    completedLessonIds.forEach(lessonId => {
       const lesson = thaiLessons.find(l => l.id === lessonId);
       if (lesson) {
         learnedWords += lesson.words.length;
       }
     });
 
-    const wordsPercentage = Math.round((learnedWords / totalWords) * 100);
+    const wordsPercentage = Math.round((learnedWords / totalWords) * 100) || 0;
 
+    // Statistiques pour les phrases
+    const totalPhraseCategories = thaiPhrases.length;
+    const completedPhraseCategoryIds = completedLessons.filter(id => {
+      const category = thaiPhrases.find(c => c.id === id);
+      return category !== undefined;
+    });
+    const completedPhraseCount = completedPhraseCategoryIds.length;
+    const phraseCompletionPercentage = Math.round((completedPhraseCount / totalPhraseCategories) * 100) || 0;
+
+    let totalPhrases = 0;
+    thaiPhrases.forEach(category => {
+      totalPhrases += category.words.length;
+    });
+
+    let learnedPhrases = 0;
+    completedPhraseCategoryIds.forEach(categoryId => {
+      const category = thaiPhrases.find(c => c.id === categoryId);
+      if (category) {
+        learnedPhrases += category.words.length;
+      }
+    });
+
+    const phrasesPercentage = Math.round((learnedPhrases / totalPhrases) * 100) || 0;
+
+    // Statistiques des exercices
+    let typingExercises = 0;
+    let memoryExercises = 0;
+    let flashcardExercises = 0;
+
+    Object.values(lessonStats).forEach(stat => {
+      if (stat.typing) {
+        typingExercises += stat.typing.successes || 0;
+      }
+      if (stat.memory) {
+        memoryExercises += stat.memory.successes || 0;
+      }
+      // Les exercices de flashcards sont comptés comme les complétion sans exercices spécifiques
+      const exercisesTotal = (stat.typing?.successes || 0) + (stat.memory?.successes || 0);
+      flashcardExercises += Math.max(0, (stat.completions || 0) - exercisesTotal);
+    });
+
+    // Activité et séquence
     let lastActivity = null;
     Object.values(lessonStats).forEach(stat => {
       if (stat.lastCompleted && (!lastActivity || stat.lastCompleted > lastActivity)) {
@@ -474,12 +521,26 @@ function App() {
     }
 
     return {
+      // Stats mots
       totalLessons,
       completedCount,
       completionPercentage,
       totalWords,
       learnedWords,
       wordsPercentage,
+      // Stats phrases
+      totalPhraseCategories,
+      completedPhraseCount,
+      phraseCompletionPercentage,
+      totalPhrases,
+      learnedPhrases,
+      phrasesPercentage,
+      // Stats exercices
+      typingExercises,
+      memoryExercises,
+      flashcardExercises,
+      totalExercises: typingExercises + memoryExercises + flashcardExercises,
+      // Stats activité
       lastActivity,
       streak
     };
@@ -664,91 +725,154 @@ function App() {
 
   const renderHome = () => (
     <div className="container mx-auto p-4">
-      <div className="hero bg-base-200 rounded-xl mb-8 p-6">
-        <div className="hero-content text-center">
-          <div className="max-w-md">
-            <h1 className="text-5xl font-bold text-primary">Apprendre le Thaï</h1>
-            <p className="py-6">Bienvenue sur cette plateforme intuitive pour apprendre le thaï facilement. Commencez par choisir une leçon ci-dessous.</p>
+      {/* Bannière d'accueil améliorée */}
+      <div className="hero-banner mb-8">
+        <div className="hero-content text-center text-white">
+          <div className="max-w-2xl">
+            <h1 className="text-5xl font-bold mb-4">Apprendre le Thaï</h1>
+            <p className="text-xl mb-6">
+              Explorez la beauté de la langue thaïlandaise à travers une approche interactive et immersive.
+              Notre méthode combine apprentissage visuel, mémorisation active et exercices de prononciation
+              pour vous aider à progresser rapidement dans votre voyage linguistique.
+            </p>
+            <div className="badge badge-primary text-sm font-medium py-3 px-4 mr-2">+{thaiLessons.length + thaiPhrases.length} catégories</div>
+            <div className="badge badge-accent text-sm font-medium py-3 px-4">+{(() => {
+              let count = 0;
+              thaiLessons.forEach(lesson => count += lesson.words.length);
+              thaiPhrases.forEach(category => count += category.words.length);
+              return count;
+            })()} expressions</div>
           </div>
         </div>
       </div>
 
-      <div className="tabs mb-4">
-        <button
-          className={`tab tab-bordered ${activeTab === 'words' ? 'tab-active' : ''}`}
-          onClick={() => setActiveTab('words')}
-        >
-          Mots
-        </button>
-        <button
-          className={`tab tab-bordered ${activeTab === 'phrases' ? 'tab-active' : ''}`}
-          onClick={() => setActiveTab('phrases')}
-        >
-          Phrases
-        </button>
+      {/* Caractéristiques principales */}
+      <div className="features-container mb-8">
+        <div className="feature-card">
+          <span className="feature-icon">🎯</span>
+          <h3 className="text-xl font-bold mb-2">Apprentissage ciblé</h3>
+          <p>Des leçons conçues autour des situations quotidiennes pour une utilisation immédiate.</p>
+        </div>
+        <div className="feature-card">
+          <span className="feature-icon">🔄</span>
+          <h3 className="text-xl font-bold mb-2">Méthode interactive</h3>
+          <p>Flashcards, exercices de saisie et de mémorisation pour renforcer vos compétences.</p>
+        </div>
+        <div className="feature-card">
+          <span className="feature-icon">📊</span>
+          <h3 className="text-xl font-bold mb-2">Suivi de progression</h3>
+          <p>Visualisez votre progression et maintenez votre motivation avec des statistiques détaillées.</p>
+        </div>
+      </div>
+
+      {/* Onglets améliorés */}
+      <div className="tabs-container mb-6">
+        <div className="tabs tabs-boxed p-1 bg-base-200">
+          <button
+            className={`tab grow ${activeTab === 'words' ? 'tab-active' : ''}`}
+            onClick={() => setActiveTab('words')}
+          >
+            <span className="mr-2">📚</span> Mots
+          </button>
+          <button
+            className={`tab grow ${activeTab === 'phrases' ? 'tab-active' : ''}`}
+            onClick={() => setActiveTab('phrases')}
+          >
+            <span className="mr-2">💬</span> Phrases
+          </button>
+        </div>
       </div>
 
       {activeTab === 'words' && (
         <>
-          <h2 className="text-2xl font-bold mb-4">Choisissez une leçon</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {thaiLessons.map(lesson => (
-              <div key={lesson.id} className="card bg-base-100 shadow-xl">
-                <div className="card-body">
-                  <h2 className="card-title">
-                    <span className="text-2xl mr-2">{lesson.icon}</span>
-                    {lesson.title}
-                    {completedLessons.includes(lesson.id) && (
-                      <div className="badge badge-success">Terminé</div>
-                    )}
-                  </h2>
-                  <p>{lesson.words.length} mots à apprendre</p>
-                  <div className="card-actions justify-end">
-                    <div className="dropdown dropdown-end">
-                      <div tabIndex={0} role="button" className="btn btn-primary">
-                        Choisir un exercice
-                      </div>
-                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><button onClick={() => startLesson(lesson)}>Flashcards</button></li>
-                        <li><button onClick={() => startTypingExercise(lesson)}>Exercice de saisie</button></li>
-                        <li><button onClick={() => startMemoryExercise(lesson)}>Exercice de mémorisation</button></li>
-                      </ul>
+          <h2 className="text-2xl font-bold mb-6 flex items-center">
+            <span className="text-primary mr-2">📚</span> Choisissez une catégorie de vocabulaire
+          </h2>
+          <div className="category-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {thaiLessons.map(lesson => {
+              // Construire la classe CSS sans espace ni accents
+              const categoryName = lesson.title.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Supprimer les accents
+                .replace(/[^a-z0-9]/g, ""); // Supprimer les espaces et caractères spéciaux
+              
+              const categoryImageClass = `category-image-${categoryName}`;
+              
+              return (
+                <div key={lesson.id} className="category-card card shadow-xl">
+                  <div className={`category-image ${categoryImageClass}`}></div>
+                  <div className="category-icon">{lesson.icon}</div>
+                  <div className="card-body">
+                    <h2 className="card-title">
+                      {lesson.title}
+                      {completedLessons.includes(lesson.id) && (
+                        <div className="badge badge-success">Terminé</div>
+                      )}
+                    </h2>
+                    <p className="text-sm mb-2">{lesson.description}</p>
+                    <p className="text-xs badge badge-outline">{lesson.words.length} mots à apprendre</p>
+                    
+                    <div className="card-actions flex flex-col gap-2 mt-4">
+                      <button onClick={() => startLesson(lesson)} className="btn btn-sm btn-primary w-full text-base">
+                        <span className="mr-2">🎴</span> Flashcards
+                      </button>
+                      <button onClick={() => startTypingExercise(lesson)} className="btn btn-sm btn-outline btn-primary w-full text-base">
+                        <span className="mr-2">⌨️</span> Exercice de saisie
+                      </button>
+                      <button onClick={() => startMemoryExercise(lesson)} className="btn btn-sm btn-outline btn-secondary w-full text-base">
+                        <span className="mr-2">🧠</span> Exercice de mémorisation
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
 
       {activeTab === 'phrases' && (
         <>
-          <h2 className="text-2xl font-bold mb-4">Choisissez une catégorie</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {thaiPhrases.map(category => (
-              <div key={category.id} className="card bg-base-100 shadow-xl">
-                <div className="card-body">
-                  <h2 className="card-title">
-                    <span className="text-2xl mr-2">{category.icon}</span>
-                    {category.title}
-                  </h2>
-                  <p>{category.words.length} phrases à apprendre</p>
-                  <div className="card-actions justify-end">
-                    <div className="dropdown dropdown-end">
-                      <div tabIndex={0} role="button" className="btn btn-primary">
-                        Choisir un exercice
-                      </div>
-                      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><button onClick={() => startLesson(category)}>Flashcards</button></li>
-                        <li><button onClick={() => startTypingExercise(category)}>Exercice de saisie</button></li>
-                        <li><button onClick={() => startMemoryExercise(category)}>Exercice de mémorisation</button></li>
-                      </ul>
+          <h2 className="text-2xl font-bold mb-6 flex items-center">
+            <span className="text-primary mr-2">💬</span> Choisissez une catégorie de phrases
+          </h2>
+          <div className="category-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {thaiPhrases.map(category => {
+              // Construire la classe CSS sans espace ni accents
+              const categoryName = category.title.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Supprimer les accents
+                .replace(/[^a-z0-9]/g, ""); // Supprimer les espaces et caractères spéciaux
+              
+              const categoryImageClass = `category-image-${categoryName}`;
+              
+              return (
+                <div key={category.id} className="category-card card shadow-xl">
+                  <div className={`category-image ${categoryImageClass}`}></div>
+                  <div className="category-icon">{category.icon}</div>
+                  <div className="card-body">
+                    <h2 className="card-title">
+                      {category.title}
+                      {completedLessons.includes(category.id) && (
+                        <div className="badge badge-success">Terminé</div>
+                      )}
+                    </h2>
+                    <p className="text-sm mb-2">{category.description}</p>
+                    <p className="text-xs badge badge-outline">{category.words.length} phrases à apprendre</p>
+                    
+                    <div className="card-actions flex flex-col gap-2 mt-4">
+                      <button onClick={() => startLesson(category)} className="btn btn-sm btn-primary w-full text-base">
+                        <span className="mr-2">🎴</span> Flashcards
+                      </button>
+                      <button onClick={() => startTypingExercise(category)} className="btn btn-sm btn-outline btn-primary w-full text-base">
+                        <span className="mr-2">⌨️</span> Exercice de saisie
+                      </button>
+                      <button onClick={() => startMemoryExercise(category)} className="btn btn-sm btn-outline btn-secondary w-full text-base">
+                        <span className="mr-2">🧠</span> Exercice de mémorisation
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
@@ -1089,6 +1213,32 @@ function App() {
                     <span className="text-right block">{stats.wordsPercentage}%</span>
                   </div>
                 </div>
+
+                <div className="stat">
+                  <div className="stat-title">Catégories de phrases terminées</div>
+                  <div className="stat-value">{stats.completedPhraseCount} / {stats.totalPhraseCategories}</div>
+                  <div className="stat-desc">
+                    <progress
+                      className="progress progress-secondary w-full"
+                      value={stats.phraseCompletionPercentage}
+                      max="100"
+                    ></progress>
+                    <span className="text-right block">{stats.phraseCompletionPercentage}%</span>
+                  </div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-title">Phrases apprises</div>
+                  <div className="stat-value">{stats.learnedPhrases} / {stats.totalPhrases}</div>
+                  <div className="stat-desc">
+                    <progress
+                      className="progress progress-info w-full"
+                      value={stats.phrasesPercentage}
+                      max="100"
+                    ></progress>
+                    <span className="text-right block">{stats.phrasesPercentage}%</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1117,6 +1267,69 @@ function App() {
                       ? "Aujourd'hui"
                       : "Revenez demain pour maintenir votre séquence !"}
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title flex items-center mb-4">
+                <span className="text-2xl mr-2">🏋️</span>
+                Types d'exercices
+              </h3>
+
+              <div className="stats stats-vertical shadow w-full">
+                <div className="stat">
+                  <div className="stat-figure text-primary">
+                    <div className="avatar">
+                      <div className="w-12 h-12 rounded-full bg-primary bg-opacity-20 flex items-center justify-center">
+                        <span className="text-2xl">🎴</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stat-title">Flashcards</div>
+                  <div className="stat-value text-primary">{stats.flashcardExercises}</div>
+                  <div className="stat-desc">Exercices de mémorisation visuelle</div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-figure text-secondary">
+                    <div className="avatar">
+                      <div className="w-12 h-12 rounded-full bg-secondary bg-opacity-20 flex items-center justify-center">
+                        <span className="text-2xl">⌨️</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stat-title">Saisie</div>
+                  <div className="stat-value text-secondary">{stats.typingExercises}</div>
+                  <div className="stat-desc">Exercices de saisie en thaï</div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-figure text-accent">
+                    <div className="avatar">
+                      <div className="w-12 h-12 rounded-full bg-accent bg-opacity-20 flex items-center justify-center">
+                        <span className="text-2xl">🧠</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stat-title">Mémorisation</div>
+                  <div className="stat-value text-accent">{stats.memoryExercises}</div>
+                  <div className="stat-desc">Exercices de mémorisation active</div>
+                </div>
+
+                <div className="stat">
+                  <div className="stat-figure text-info">
+                    <div className="avatar">
+                      <div className="w-12 h-12 rounded-full bg-info bg-opacity-20 flex items-center justify-center">
+                        <span className="text-2xl">💯</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="stat-title">Total</div>
+                  <div className="stat-value text-info">{stats.totalExercises}</div>
+                  <div className="stat-desc">Exercices complétés</div>
                 </div>
               </div>
             </div>

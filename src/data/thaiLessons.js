@@ -8,6 +8,7 @@ const thaiLessons = [
     id: 1,
     title: 'Salutations de base',
     icon: '👋',
+    description: 'Les expressions essentielles pour engager une conversation en thaï et faire bonne impression.',
     words: [
       { thai: 'สวัสดี', phonetic: 'sà-wàt-dee', french: 'Bonjour' },
       { thai: 'ขอบคุณ', phonetic: 'kɔ̀ɔp-kun', french: 'Merci' },
@@ -25,6 +26,7 @@ const thaiLessons = [
     id: 2,
     title: 'Nourriture',
     icon: '🍲',
+    description: 'Découvrez le vocabulaire de la gastronomie thaïlandaise et ses saveurs uniques.',
     words: [
       { thai: 'อาหาร', phonetic: 'aa-hǎan', french: 'Nourriture' },
       { thai: 'ข้าว', phonetic: 'kâao', french: 'Riz' },
@@ -46,6 +48,7 @@ const thaiLessons = [
     id: 3,
     title: 'Chiffres',
     icon: '🔢',
+    description: 'Apprenez à compter et à comprendre les nombres en thaï pour vos achats quotidiens.',
     words: [
       { thai: 'ศูนย์', phonetic: 'sǔun', french: 'Zéro' },
       { thai: 'หนึ่ง', phonetic: 'nèung', french: 'Un' },
@@ -66,6 +69,7 @@ const thaiLessons = [
     id: 4,
     title: 'Jours de la semaine',
     icon: '📅',
+    description: 'Maîtrisez les termes relatifs au temps pour organiser votre séjour en Thaïlande.',
     words: [
       { thai: 'วันจันทร์', phonetic: 'wan-jan', french: 'Lundi' },
       { thai: 'วันอังคาร', phonetic: 'wan-ang-khaan', french: 'Mardi' },
@@ -83,6 +87,7 @@ const thaiLessons = [
     id: 5,
     title: 'Famille',
     icon: '👪',
+    description: 'Un vocabulaire complet pour parler de votre famille et comprendre les relations familiales thaïes.',
     words: [
       { thai: 'พ่อ', phonetic: 'phɔ̂ɔ', french: 'Père' },
       { thai: 'แม่', phonetic: 'mɛ̂ɛ', french: 'Mère' },
@@ -104,6 +109,7 @@ const thaiLessons = [
     id: 6,
     title: 'Transport',
     icon: '🚗',
+    description: 'Les mots essentiels pour vous déplacer facilement dans les villes et régions thaïlandaises.',
     words: [
       { thai: 'รถ', phonetic: 'rót', french: 'Voiture/Véhicule' },
       { thai: 'รถยนต์', phonetic: 'rót-yon', french: 'Automobile' },
@@ -123,6 +129,7 @@ const thaiLessons = [
     id: 7,
     title: 'Couleurs',
     icon: '🎨',
+    description: 'Découvrez les noms des couleurs en thaï, utiles pour le shopping et les descriptions.',
     words: [
       { thai: 'สี', phonetic: 'sǐi', french: 'Couleur' },
       { thai: 'สีแดง', phonetic: 'sǐi-dɛɛng', french: 'Rouge' },
@@ -142,6 +149,7 @@ const thaiLessons = [
     id: 8,
     title: 'Directions et lieux',
     icon: '🧭',
+    description: 'Les expressions indispensables pour trouver votre chemin et demander des indications.',
     words: [
       { thai: 'ซ้าย', phonetic: 'sáai', french: 'Gauche' },
       { thai: 'ขวา', phonetic: 'khwǎa', french: 'Droite' },
@@ -164,6 +172,7 @@ const thaiLessons = [
     id: 9,
     title: 'Verbes courants',
     icon: '🏃',
+    description: 'Les actions les plus utilisées au quotidien pour construire des phrases simples et efficaces.',
     words: [
       { thai: 'กิน', phonetic: 'kin', french: 'Manger' },
       { thai: 'ดื่ม', phonetic: 'dʉ̀ʉm', french: 'Boire' },
@@ -188,6 +197,7 @@ const thaiLessons = [
     id: 10,
     title: 'Shopping',
     icon: '🛒',
+    description: 'Le vocabulaire essentiel pour faire des achats, négocier et profiter des marchés thaïlandais.',
     words: [
       { thai: 'เท่าไหร่', phonetic: 'thâo-rài', french: 'Combien ça coûte?' },
       { thai: 'ลดราคา', phonetic: 'lót-raa-khaa', french: 'Réduction/Solde' },
@@ -207,6 +217,7 @@ const thaiLessons = [
     id: 11,
     title: 'Corps humain',
     icon: '🧠',
+    description: 'Les termes anatomiques utiles, notamment en cas de besoin médical ou de bien-être.',
     words: [
       { thai: 'ศีรษะ', phonetic: 'sǐi-sà', french: 'Tête' },
       { thai: 'ตา', phonetic: 'taa', french: 'Œil' },
@@ -227,6 +238,7 @@ const thaiLessons = [
     id: 12,
     title: 'Urgences',
     icon: '🚨',
+    description: 'Les expressions cruciales pour gérer une situation d\'urgence ou demander de l\'aide.',
     words: [
       { thai: 'ช่วยด้วย', phonetic: 'chûai-dûai', french: 'Au secours!' },
       { thai: 'เหตุฉุกเฉิน', phonetic: 'hèet-chùk-chə̀ən', french: 'Urgence' },
@@ -252,6 +264,7 @@ const thaiPhrases = [
     id: 1,
     title: 'Conversation de base',
     icon: '💬',
+    description: 'Les expressions essentielles pour engager et maintenir une conversation en thaï.',
     words: [
       { thai: 'คุณพูดภาษาอังกฤษได้ไหม', phonetic: 'khun-phûut-phaa-sǎa-ang-krìt-dâi-mǎi', french: 'Parlez-vous anglais ?' },
       { thai: 'คุณชื่ออะไร', phonetic: 'khun-chʉ̂ʉ-à-rai', french: 'Comment vous appelez-vous ?' },
@@ -271,6 +284,7 @@ const thaiPhrases = [
     id: 2,
     title: 'Au restaurant',
     icon: '🍽️',
+    description: 'Tout ce dont vous avez besoin pour commander et apprécier un repas en Thaïlande.',
     words: [
       { thai: 'โต๊ะสำหรับ... คน', phonetic: 'tó-sǎm-ràp... khon', french: 'Une table pour ... personnes' },
       { thai: 'เมนูมีไหม', phonetic: 'mee-nuu-mii-mǎi', french: 'Avez-vous un menu ?' },
@@ -290,6 +304,7 @@ const thaiPhrases = [
     id: 3,
     title: 'Transport et directions',
     icon: '🧭',
+    description: 'Phrases pratiques pour vous déplacer et demander votre chemin en Thaïlande.',
     words: [
       { thai: 'ไปที่นี่ได้ไหม', phonetic: 'pai-thîi-nîi-dâi-mǎi', french: 'Pouvez-vous m\'emmener à cet endroit ?' },
       { thai: 'ที่นี่อยู่ไกลแค่ไหน', phonetic: 'thîi-nîi-yùu-klai-khɛ̂-nǎi', french: 'À quelle distance est cet endroit ?' },
@@ -309,6 +324,7 @@ const thaiPhrases = [
     id: 4,
     title: 'À l\'hôtel',
     icon: '🏨',
+    description: 'Expressions utiles pour votre séjour à l\'hôtel, de la réservation aux services.',
     words: [
       { thai: 'ผมจองห้องไว้', phonetic: 'phǒm-jɔɔng-hɔ̂ng-wái', french: 'J\'ai une réservation (homme)' },
       { thai: 'ดิฉันจองห้องไว้', phonetic: 'di-chǎn-jɔɔng-hɔ̂ng-wái', french: 'J\'ai une réservation (femme)' },
@@ -327,6 +343,7 @@ const thaiPhrases = [
     id: 5,
     title: 'Situations d\'urgence',
     icon: '🆘',
+    description: 'Phrases cruciales à connaître en cas d\'urgence ou de besoin d\'assistance.',
     words: [
       { thai: 'ช่วยด้วย', phonetic: 'chûai-dûai', french: 'Au secours !' },
       { thai: 'เรียกตำรวจ', phonetic: 'rîak-tam-rùat', french: 'Appelez la police' },

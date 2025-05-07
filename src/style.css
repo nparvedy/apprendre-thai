@@ -1,2 +1,351 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* styles existants */
+
+/* Animations et styles pour les cartes de catégories */
+.category-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  border-radius: 1rem;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.category-card .category-image {
+  height: 150px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem 0.75rem 0 0;
+  transition: transform 0.5s ease;
+  /* Suppression de l'image de fond par défaut */
+}
+
+.category-card:hover .category-image {
+  transform: scale(1.05);
+}
+
+.category-card .category-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+}
+
+.category-card .category-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+/* Correction du menu déroulant pour qu'il reste visible */
+.dropdown-end .dropdown-content {
+  transform-origin: top right;
+  right: 0;
+  top: 100%;
+  bottom: auto;
+  max-height: fit-content;
+  max-width: fit-content;
+  position: absolute;
+  margin-top: 0.25rem;
+  z-index: 50;
+}
+
+/* Correction du menu déroulant pour qu'il reste entièrement visible */
+.dropdown {
+  position: static;
+}
+
+.dropdown .dropdown-content {
+  position: absolute;
+  z-index: 1000;
+}
+
+/* Forcer le menu à s'afficher au-dessus de tous les éléments */
+.dropdown-bottom .dropdown-content {
+  top: calc(100% + 0.25rem);
+  transform-origin: top;
+}
+
+/* Ajout d'une hauteur fixe pour les cartes de catégorie */
+.card-body {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-actions {
+  margin-top: auto;
+}
+
+.hero-content {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.tabs-container {
+  transition: all 0.3s ease;
+}
+
+.tab {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.tab-active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: currentColor;
+  animation: tabSlideIn 0.3s ease-out forwards;
+}
+
+.category-grid {
+  display: grid;
+  gap: 1.5rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tabSlideIn {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Style pour la bannière d'accueil */
+.hero-banner {
+  background-image: url('https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGhhaWxhbmR8ZW58MHx8MHx8&auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%);
+  z-index: 1;
+}
+
+.hero-banner .hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem 1rem;
+}
+
+.features-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.feature-card {
+  padding: 1.5rem;
+  background-color: var(--b2);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+/* Images adaptées pour chaque catégorie */
+.category-image-salutations {
+  background-image: url('https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-nourriture {
+  background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-chiffres {
+  background-image: url('https://images.unsplash.com/photo-1569396116180-210c182bedb8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-jours {
+  background-image: url('https://images.unsplash.com/photo-1522836924445-4478bdeb860c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-famille {
+  background-image: url('https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-transport {
+  background-image: url('https://images.unsplash.com/photo-1577653898996-a5eb380e60a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-couleurs {
+  background-image: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-directions {
+  background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-verbes {
+  background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-shopping {
+  background-image: url('https://images.unsplash.com/photo-1519415943484-9fa1873496d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-corps {
+  background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-urgences {
+  background-image: url('https://images.unsplash.com/photo-1601055283742-8b27e81b5553?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+/* Images pour les phrases */
+.category-image-conversation {
+  background-image: url('https://images.unsplash.com/photo-1573497019418-b400bb3ab074?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-restaurant {
+  background-image: url('https://images.unsplash.com/photo-1552566626-dead1fd56ae7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-transport-directions {
+  background-image: url('https://images.unsplash.com/photo-1540804485132-a319bca470a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-hotel {
+  background-image: url('https://images.unsplash.com/photo-1529290130-4ca3753253ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-urgence {
+  background-image: url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+/* Ajout d'images pour catégories manquantes */
+.category-image-adjectifs {
+  background-image: url('https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-temps {
+  background-image: url('https://images.unsplash.com/photo-1501139083538-0139583c060f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-animaux {
+  background-image: url('https://images.unsplash.com/photo-1503431760783-91f2569f6802?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-fruits {
+  background-image: url('https://images.unsplash.com/photo-1619566636858-adf3ef46400b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-legumes {
+  background-image: url('https://images.unsplash.com/photo-1597362925123-77861d3fbac7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-situationsdurgence {
+  background-image: url('https://images.unsplash.com/photo-1615461065624-21b965d8a493?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-conversationdebase {
+  background-image: url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-aurestaurant {
+  background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-transportetdirections {
+  background-image: url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-alhotel {
+  background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+/* Style générique pour toute catégorie qui n'a pas de style spécifique */
+[class*="category-image-"]:not([class*="category-image-salutations"]):not([class*="category-image-nourriture"]):not([class*="category-image-chiffres"]):not([class*="category-image-jours"]):not([class*="category-image-famille"]):not([class*="category-image-transport"]):not([class*="category-image-couleurs"]):not([class*="category-image-directions"]):not([class*="category-image-verbes"]):not([class*="category-image-shopping"]):not([class*="category-image-corps"]):not([class*="category-image-urgences"]):not([class*="category-image-conversation"]):not([class*="category-image-restaurant"]):not([class*="category-image-transport-directions"]):not([class*="category-image-hotel"]):not([class*="category-image-urgence"]):not([class*="category-image-adjectifs"]):not([class*="category-image-temps"]):not([class*="category-image-animaux"]):not([class*="category-image-fruits"]):not([class*="category-image-legumes"]):not([class*="category-image-situationsdurgence"]):not([class*="category-image-conversationdebase"]):not([class*="category-image-aurestaurant"]):not([class*="category-image-transportetdirections"]):not([class*="category-image-alhotel"]) {
+  background-image: url('https://images.unsplash.com/photo-1527689368864-3a821dbccc34?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+/* Images adaptées pour chaque catégorie */
+.category-image-salutationsdebase {
+  background-image: url('https://images.unsplash.com/photo-1532139656816-67d8b64c7934?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-joursdelasemaine {
+  background-image: url('https://images.unsplash.com/photo-1557071583-9ba7f95363a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-directionsetlieux {
+  background-image: url('https://images.unsplash.com/photo-1519107822687-0e655bf3a3bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-verbescourants {
+  background-image: url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
+
+.category-image-corpshumain {
+  background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');
+}
