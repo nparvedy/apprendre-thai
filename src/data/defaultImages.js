@@ -6,6 +6,13 @@ const defaultImages = {
   's\'il vous plaît': 'https://images.unsplash.com/photo-1555955208-94f6fafea771?q=80&w=300',
   'oui': 'https://images.unsplash.com/photo-1572250383942-c513d6602f1b?q=80&w=300',
   'non': 'https://images.unsplash.com/photo-1607275121002-8cfad2a07891?q=80&w=300',
+  'comment allez-vous': 'https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?q=80&w=300',
+  'je vais bien': 'https://images.unsplash.com/photo-1521510895919-46920266ddb3?q=80&w=300',
+  'pas de problème': 'https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?q=80&w=300',
+  'à bientôt': 'https://images.unsplash.com/photo-1584993319244-8ff64268cd77?q=80&w=300',
+  'enchanté': 'https://images.unsplash.com/photo-1558898479-33c0057a5d12?q=80&w=300',
+  'excusez-moi': 'https://images.unsplash.com/photo-1545231027-637d2f6210f8?q=80&w=300',
+  'je ne comprends pas': 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=300',
 
   // Nourriture
   'riz': 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?q=80&w=300',
@@ -17,13 +24,56 @@ const defaultImages = {
   'poisson': 'https://images.unsplash.com/photo-1498654896293-37aacf113fd9?q=80&w=300',
   'légume': 'https://images.unsplash.com/photo-1557844352-761f2565b576?q=80&w=300',
   'fruit': 'https://images.unsplash.com/photo-1519996529931-28324d5a630e?q=80&w=300',
+//   'nourriture': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=300',
+  'délicieux': 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?q=80&w=300',
+  'pad thaï': 'https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=300',
+  'soupe': 'https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=300',
+  'salade': 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=300',
+  'café': 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=300',
+  'thé': 'https://images.unsplash.com/photo-1523920290228-4f321a939b4c?q=80&w=300',
+  'épicé': 'https://images.unsplash.com/photo-1536510233921-8e5043fce771?q=80&w=300',
+  'sucré': 'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=300',
+  'salé': 'https://images.unsplash.com/photo-1587302186428-d82954307481?q=80&w=300',
+  'acide': 'https://images.unsplash.com/photo-1568569350062-ebfa3cb195df?q=80&w=300',
 
   // Nombres
+  'zéro': 'https://images.unsplash.com/photo-1516125073169-5d7e789225fd?q=80&w=300',
   'un': 'https://images.unsplash.com/photo-1621264326259-c441a2c0458c?q=80&w=300',
   'deux': 'https://images.unsplash.com/photo-1581022295087-35e593693456?q=80&w=300',
   'trois': 'https://images.unsplash.com/photo-1629052510192-0712c8d74a87?q=80&w=300',
   'quatre': 'https://images.unsplash.com/photo-1582035498396-8428e3ee84fb?q=80&w=300',
   'cinq': 'https://images.unsplash.com/photo-1532354058425-c1c9c9343825?q=80&w=300',
+  'six': 'https://images.unsplash.com/photo-1567882517393-c349498d9895?q=80&w=300',
+  'sept': 'https://images.unsplash.com/photo-1642551783096-5680c5519ae5?q=80&w=300',
+  'huit': 'https://images.unsplash.com/photo-1634213682784-3e8f37ae8f0a?q=80&w=300',
+  'neuf': 'https://images.unsplash.com/photo-1634928302550-e98c4ea75c4a?q=80&w=300',
+  'dix': 'https://images.unsplash.com/photo-1639578676702-16c7d9fedceb?q=80&w=300',
+  'cent': 'https://images.unsplash.com/photo-1608111283890-ebe7d97d50e9?q=80&w=300',
+  'mille': 'https://images.unsplash.com/photo-1554667679-a5170e96491b?q=80&w=300',
+
+  // Jours et temps
+  'lundi': 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=300',
+  'mardi': 'https://images.unsplash.com/photo-1519159554831-29cda8fc1bbe?q=80&w=300',
+  'mercredi': 'https://images.unsplash.com/photo-1552308995-2baac1ad5490?q=80&w=300',
+  'jeudi': 'https://images.unsplash.com/photo-1579503841864-b8b7c23a1e26?q=80&w=300',
+  'vendredi': 'https://images.unsplash.com/photo-1520095972714-909e91b038e5?q=80&w=300',
+  'samedi': 'https://images.unsplash.com/photo-1494587351196-bbf5f29cff42?q=80&w=300',
+  'dimanche': 'https://images.unsplash.com/photo-1542203519-a8ee7081234c?q=80&w=300',
+  'semaine': 'https://images.unsplash.com/photo-1593267782464-3f0499931860?q=80&w=300',
+  'mois': 'https://images.unsplash.com/photo-1557683304-673a23048d34?q=80&w=300',
+  'année': 'https://images.unsplash.com/photo-1546271227-b0f63dfa7a7b?q=80&w=300',
+
+  // Famille
+  'père': 'https://images.unsplash.com/photo-1565068218731-fe2dd3c029f0?q=80&w=300',
+  'mère': 'https://images.unsplash.com/photo-1548692197-c94e1fea01fa?q=80&w=300',
+  'frère': 'https://images.unsplash.com/photo-1511895549669-b7d2d789bb5d?q=80&w=300',
+  'sœur': 'https://images.unsplash.com/photo-1535030502726-d5e36588e6e5?q=80&w=300',
+  'fils': 'https://images.unsplash.com/photo-1561164517-3e72de373af0?q=80&w=300',
+  'fille': 'https://images.unsplash.com/photo-1627638579786-2a41297ddf02?q=80&w=300',
+  'mari': 'https://images.unsplash.com/photo-1511772013887-a281bc99e37f?q=80&w=300',
+  'femme': 'https://images.unsplash.com/photo-1527736947477-2790e28f3443?q=80&w=300',
+  'grand-père': 'https://images.unsplash.com/photo-1581579438747-e8af3bf644b7?q=80&w=300',
+  'grand-mère': 'https://images.unsplash.com/photo-1526375383566-aea2b98450f8?q=80&w=300',
 
   // Transport
   'taxi': 'https://images.unsplash.com/photo-1553844055-cfef9e11c5be?q=80&w=300',
@@ -31,6 +81,11 @@ const defaultImages = {
   'train': 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=300',
   'bateau': 'https://images.unsplash.com/photo-1527425260491-98c6ebc0a40c?q=80&w=300',
   'avion': 'https://images.unsplash.com/photo-1532299033004-d924127c0040?q=80&w=300',
+  'voiture': 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=300',
+  'moto': 'https://images.unsplash.com/photo-1558981001-1995369a39cd?q=80&w=300',
+  'vélo': 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?q=80&w=300',
+  'tuk-tuk': 'https://images.unsplash.com/photo-1600677396360-9c4e8e49114d?q=80&w=300',
+  'station': 'https://images.unsplash.com/photo-1588460435751-1facbe61a2f5?q=80&w=300',
 
   // Temps
   'matin': 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?q=80&w=300',
@@ -39,11 +94,29 @@ const defaultImages = {
   'nuit': 'https://images.unsplash.com/photo-1505322022379-7c3353ee6291?q=80&w=300',
   'heure': 'https://images.unsplash.com/photo-1508057198894-b80685c8e5f3?q=80&w=300',
 
+  // Couleurs
+  'couleur': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=300',
+  'rouge': 'https://images.unsplash.com/photo-1568396089786-8284b64fac56?q=80&w=300',
+  'vert': 'https://images.unsplash.com/photo-1582898967731-b5834427fd96?q=80&w=300',
+  'bleu': 'https://images.unsplash.com/photo-1569222258257-68d3846bbd7a?q=80&w=300',
+  'jaune': 'https://images.unsplash.com/photo-1576505589746-16a812822636?q=80&w=300',
+  'orange': 'https://images.unsplash.com/photo-1618331833071-ce81bd50d300?q=80&w=300',
+  'violet': 'https://images.unsplash.com/photo-1526206210737-b243845d3d8c?q=80&w=300',
+  'rose': 'https://images.unsplash.com/photo-1564419434663-c49965a50e53?q=80&w=300',
+  'marron': 'https://images.unsplash.com/photo-1567489539763-d071a6338964?q=80&w=300',
+  'noir': 'https://images.unsplash.com/photo-1550684848-86a5d8727436?q=80&w=300',
+  'blanc': 'https://images.unsplash.com/photo-1558470598-a5dda9640f68?q=80&w=300',
+  'gris': 'https://images.unsplash.com/photo-1559195690-236f5fab651a?q=80&w=300',
+
   // Directions
   'gauche': 'https://images.unsplash.com/photo-1541787457429-b1766a4766b6?q=80&w=300',
   'droite': 'https://images.unsplash.com/photo-1490157598888-f84fd2026ebf?q=80&w=300',
   'avant': 'https://images.unsplash.com/photo-1485081669829-bacb8c7bb1f3?q=80&w=300',
   'arrière': 'https://images.unsplash.com/photo-1529758146491-1e11fd721f77?q=80&w=300',
+  'nord': 'https://images.unsplash.com/photo-1474496517593-015d8b59450d?q=80&w=300',
+  'sud': 'https://images.unsplash.com/photo-1515635312237-2c849ae3347b?q=80&w=300',
+  'est': 'https://images.unsplash.com/photo-1634059004350-11e3d212202f?q=80&w=300',
+  'ouest': 'https://images.unsplash.com/photo-1523496247743-3d69ed9c18a3?q=80&w=300',
 
   // Lieux
   'hôtel': 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=300',
@@ -51,12 +124,66 @@ const defaultImages = {
   'marché': 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=300',
   'plage': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=300',
   'temple': 'https://images.unsplash.com/photo-1599825986654-5e--ZT9a1Sg?q=80&w=300',
+  'aéroport': 'https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=300',
+  'centre commercial': 'https://images.unsplash.com/photo-1519567594000-1e249579d184?q=80&w=300',
 
   // Corps
   'tête': 'https://images.unsplash.com/photo-1541710430735-5fca14c95b00?q=80&w=300',
   'main': 'https://images.unsplash.com/photo-1579169825453-8d6507cb78a8?q=80&w=300',
   'pied': 'https://images.unsplash.com/photo-1595452767427-0905ad9b036d?q=80&w=300',
   'yeux': 'https://images.unsplash.com/photo-1586009287138-9fd087a50e22?q=80&w=300',
+  'oreille': 'https://images.unsplash.com/photo-1589137849361-193a3f6ef2ad?q=80&w=300',
+  'nez': 'https://images.unsplash.com/photo-1583195764036-6dc248ac07d9?q=80&w=300',
+  'bouche': 'https://images.unsplash.com/photo-1555617778-02518510b9fa?q=80&w=300',
+  'bras': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=300',
+  'doigt': 'https://images.unsplash.com/photo-1599447292180-45fd84092ef0?q=80&w=300',
+  'jambe': 'https://images.unsplash.com/photo-1556565681-67b9cd907d20?q=80&w=300',
+  'cœur': 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?q=80&w=300',
+  'dos': 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=300',
+  'ventre': 'https://images.unsplash.com/photo-1518310952931-b1de897abd40?q=80&w=300',
+
+  // Urgences
+  'secours': 'https://images.unsplash.com/photo-1590514526183-300a6e8f956e?q=80&w=300',
+  'urgence': 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=300',
+  'police': 'https://images.unsplash.com/photo-1569775293146-2f4bd964f3fe?q=80&w=300',
+  'hôpital': 'https://images.unsplash.com/photo-1538108149855-05d57f077f0f?q=80&w=300',
+  'médecin': 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=300',
+  'douleur': 'https://images.unsplash.com/photo-1536816579748-4ecb3f03d72a?q=80&w=300',
+  'fièvre': 'https://images.unsplash.com/photo-1626352956857-5c5f7ab12e33?q=80&w=300',
+  'médicament': 'https://images.unsplash.com/photo-1584362917165-526a968579e8?q=80&w=300',
+  'accident': 'https://images.unsplash.com/photo-1550483513-aed2cfd12422?q=80&w=300',
+  'incendie': 'https://images.unsplash.com/photo-1624628639856-100bf817fd35?q=80&w=300',
+
+  // Verbes
+  'manger': 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=300',
+  'boire': 'https://images.unsplash.com/photo-1523362628745-0c100150b504?q=80&w=300',
+  'dormir': 'https://images.unsplash.com/photo-1520206183501-b80df61043c2?q=80&w=300',
+  'aller': 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=300',
+  'venir': 'https://images.unsplash.com/photo-1542596768-5d1d21f1cf98?q=80&w=300',
+  'parler': 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=300',
+  'écouter': 'https://images.unsplash.com/photo-1571079520814-1a56da9b5d97?q=80&w=300',
+  'voir': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300',
+  'regarder': 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=300',
+  'lire': 'https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=300',
+  'écrire': 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=300',
+  'travailler': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=300',
+  'jouer': 'https://images.unsplash.com/photo-1560252829-804f1aedf1be?q=80&w=300',
+  'acheter': 'https://images.unsplash.com/photo-1591085686350-798c0f9faa7f?q=80&w=300',
+  'vendre': 'https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=300',
+  'aider': 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=300',
+  'aimer': 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300',
+
+  // Shopping
+  'combien': 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=300',
+  'réduction': 'https://images.unsplash.com/photo-1607083681678-7682aba43dd3?q=80&w=300',
+  'cher': 'https://images.unsplash.com/photo-1537832816519-689ad163238b?q=80&w=300',
+  'pas cher': 'https://images.unsplash.com/photo-1554224155-1696413565d3?q=80&w=300',
+  'argent': 'https://images.unsplash.com/photo-1565454296317-b45fe0ff1447?q=80&w=300',
+  'banque': 'https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?q=80&w=300',
+  'carte de crédit': 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=300',
+  'vêtements': 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=300',
+  'taille': 'https://images.unsplash.com/photo-1564466809058-bf4114d55352?q=80&w=300',
+  'chaussures': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=300',
 
   // Images par défaut pour les catégories
   'words': 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=300',
@@ -66,7 +193,13 @@ const defaultImages = {
   'voyage': 'https://images.unsplash.com/photo-1516546453174-5e1098a4b4af?q=80&w=300',
   'temps': 'https://images.unsplash.com/photo-1501139083538-0139c4722333?q=80&w=300',
   'nombres': 'https://images.unsplash.com/photo-1577962146048-0f472495d057?q=80&w=300',
-  'directions': 'https://images.unsplash.com/photo-1520190282873-afe1285c9a2a?q=80&w=300'
+  'directions': 'https://images.unsplash.com/photo-1520190282873-afe1285c9a2a?q=80&w=300',
+  'famille': 'https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=300',
+  'couleurs': 'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?q=80&w=300',
+  'corps': 'https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=300',
+  'urgences': 'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?q=80&w=300',
+  'verbes': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=300',
+  'shopping': 'https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=300'
 };
 
 export default defaultImages;
