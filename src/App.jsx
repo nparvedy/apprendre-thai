@@ -811,15 +811,15 @@ function App() {
                     <p className="text-sm mb-2">{lesson.description}</p>
                     <p className="text-xs badge badge-outline">{lesson.words.length} mots à apprendre</p>
                     
-                    <div className="card-actions flex flex-col gap-2 mt-4">
-                      <button onClick={() => startLesson(lesson)} className="btn btn-sm btn-primary w-full text-base">
-                        <span className="mr-2">🎴</span> Flashcards
+                    <div className="card-actions flex flex-row flex-wrap gap-2 mt-4">
+                      <button onClick={() => startLesson(lesson)} className="btn btn-sm btn-primary flex-1 text-base">
+                        <span className="mr-1">🎴</span> Flashcards
                       </button>
-                      <button onClick={() => startTypingExercise(lesson)} className="btn btn-sm btn-outline btn-primary w-full text-base">
-                        <span className="mr-2">⌨️</span> Exercice de saisie
+                      <button onClick={() => startTypingExercise(lesson)} className="btn btn-sm btn-outline btn-primary flex-1 text-base">
+                        <span className="mr-1">⌨️</span> Saisie
                       </button>
-                      <button onClick={() => startMemoryExercise(lesson)} className="btn btn-sm btn-outline btn-secondary w-full text-base">
-                        <span className="mr-2">🧠</span> Exercice de mémorisation
+                      <button onClick={() => startMemoryExercise(lesson)} className="btn btn-sm btn-outline btn-secondary flex-1 text-base">
+                        <span className="mr-1">🧠</span> Mémo
                       </button>
                     </div>
                   </div>
@@ -858,15 +858,15 @@ function App() {
                     <p className="text-sm mb-2">{category.description}</p>
                     <p className="text-xs badge badge-outline">{category.words.length} phrases à apprendre</p>
                     
-                    <div className="card-actions flex flex-col gap-2 mt-4">
-                      <button onClick={() => startLesson(category)} className="btn btn-sm btn-primary w-full text-base">
-                        <span className="mr-2">🎴</span> Flashcards
+                    <div className="card-actions flex flex-row flex-wrap gap-2 mt-4">
+                      <button onClick={() => startLesson(category)} className="btn btn-sm btn-primary flex-1 text-base">
+                        <span className="mr-1">🎴</span> Flashcards
                       </button>
-                      <button onClick={() => startTypingExercise(category)} className="btn btn-sm btn-outline btn-primary w-full text-base">
-                        <span className="mr-2">⌨️</span> Exercice de saisie
+                      <button onClick={() => startTypingExercise(category)} className="btn btn-sm btn-outline btn-primary flex-1 text-base">
+                        <span className="mr-1">⌨️</span> Saisie
                       </button>
-                      <button onClick={() => startMemoryExercise(category)} className="btn btn-sm btn-outline btn-secondary w-full text-base">
-                        <span className="mr-2">🧠</span> Exercice de mémorisation
+                      <button onClick={() => startMemoryExercise(category)} className="btn btn-sm btn-outline btn-secondary flex-1 text-base">
+                        <span className="mr-1">🧠</span> Mémo
                       </button>
                     </div>
                   </div>
