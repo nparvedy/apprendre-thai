@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './style.css'
 import { thaiLessons, thaiPhrases } from './data/thaiLessons'
+import thaiKeyboard from './data/thaiKeyboard'
 import defaultImages from './data/defaultImages'
 
 // Fonctions utilitaires pour la sauvegarde de la progression
@@ -49,59 +50,6 @@ function App() {
     keyboardHighlight: null,
     currentKeyIndex: 0
   });
-
-  // Mettre à jour le clavier thaï avec les bonnes correspondances AZERTY
-  const thaiKeyboard = {
-    row1: [
-      { thai: 'ๅ', latin: '&', shift: false }, { thai: '/', latin: 'é', shift: false }, { thai: '_', latin: '"', shift: false }, 
-      { thai: 'ภ', latin: '\'', shift: false }, { thai: 'ถ', latin: '(', shift: false }, { thai: 'ุ', latin: '-', shift: false }, 
-      { thai: 'ึ', latin: 'è', shift: false }, { thai: 'ค', latin: '_', shift: false }, { thai: 'ต', latin: 'ç', shift: false }, 
-      { thai: 'จ', latin: 'à', shift: false }, { thai: 'ข', latin: ')', shift: false }, { thai: 'ช', latin: '=', shift: false }
-    ],
-    row2: [
-      { thai: 'ๆ', latin: 'a', shift: false }, { thai: 'ไ', latin: 'z', shift: false }, { thai: 'ำ', latin: 'e', shift: false }, 
-      { thai: 'พ', latin: 'r', shift: false }, { thai: 'ะ', latin: 't', shift: false }, { thai: 'ั', latin: 'y', shift: false }, 
-      { thai: 'ี', latin: 'u', shift: false }, { thai: 'ร', latin: 'i', shift: false }, { thai: 'น', latin: 'o', shift: false }, 
-      { thai: 'ย', latin: 'p', shift: false }, { thai: 'บ', latin: '^', shift: false }, { thai: 'ล', latin: '$', shift: false }
-    ],
-    row3: [
-      { thai: 'ฟ', latin: 'q', shift: false }, { thai: 'ห', latin: 's', shift: false }, { thai: 'ก', latin: 'd', shift: false }, 
-      { thai: 'ด', latin: 'f', shift: false }, { thai: 'เ', latin: 'g', shift: false }, { thai: '้', latin: 'h', shift: false }, 
-      { thai: '่', latin: 'j', shift: false }, { thai: 'า', latin: 'k', shift: false }, { thai: 'ส', latin: 'l', shift: false }, 
-      { thai: 'ว', latin: 'm', shift: false }, { thai: 'ง', latin: 'ù', shift: false }, { thai: 'ฃ', latin: '*', shift: true }
-    ],
-    row4: [
-      { thai: 'ผ', latin: 'w', shift: false }, { thai: 'ป', latin: 'x', shift: false }, { thai: 'แ', latin: 'c', shift: false }, 
-      { thai: 'อ', latin: 'v', shift: false }, { thai: 'ิ', latin: 'b', shift: false }, { thai: 'ื', latin: 'n', shift: false }, 
-      { thai: 'ท', latin: ',', shift: false }, { thai: 'ม', latin: ';', shift: false }, { thai: 'ใ', latin: ':', shift: true }, 
-      { thai: 'ฝ', latin: '!', shift: true }, { thai: 'ฦ', latin: '§', shift: false }
-    ],
-    shiftRow1: [
-      { thai: '+', latin: '1', shift: true }, { thai: '๑', latin: '2', shift: true }, { thai: '๒', latin: '3', shift: true }, 
-      { thai: '๓', latin: '4', shift: true }, { thai: '๔', latin: '5', shift: true }, { thai: 'ู', latin: '6', shift: true }, 
-      { thai: '฿', latin: '7', shift: true }, { thai: '๕', latin: '8', shift: true }, { thai: '๖', latin: '9', shift: true }, 
-      { thai: '๗', latin: '0', shift: true }, { thai: '๘', latin: '°', shift: true }, { thai: '๙', latin: '+', shift: true }
-    ],
-    shiftRow2: [
-      { thai: '๐', latin: 'A', shift: true }, { thai: '"', latin: 'Z', shift: true }, { thai: 'ฎ', latin: 'E', shift: true }, 
-      { thai: 'ฑ', latin: 'R', shift: true }, { thai: 'ธ', latin: 'T', shift: true }, { thai: 'ํ', latin: 'Y', shift: true }, 
-      { thai: '๊', latin: 'U', shift: true }, { thai: 'ณ', latin: 'I', shift: true }, { thai: 'ฯ', latin: 'O', shift: true }, 
-      { thai: 'ญ', latin: 'P', shift: true }, { thai: 'ฐ', latin: '¨', shift: true }, { thai: ',', latin: '£', shift: true }
-    ],
-    shiftRow3: [
-      { thai: 'ฤ', latin: 'Q', shift: true }, { thai: 'ฆ', latin: 'S', shift: true }, { thai: 'ฏ', latin: 'D', shift: true }, 
-      { thai: 'โ', latin: 'F', shift: true }, { thai: 'ฌ', latin: 'G', shift: true }, { thai: '็', latin: 'H', shift: true }, 
-      { thai: '๋', latin: 'J', shift: true }, { thai: 'ษ', latin: 'K', shift: true }, { thai: 'ศ', latin: 'L', shift: true }, 
-      { thai: 'ซ', latin: 'M', shift: true }, { thai: '.', latin: '%', shift: true }, { thai: 'ฅ', latin: 'µ', shift: true }
-    ],
-    shiftRow4: [
-      { thai: '(', latin: 'W', shift: true }, { thai: ')', latin: 'X', shift: true }, { thai: 'ฉ', latin: 'C', shift: true }, 
-      { thai: 'ฮ', latin: 'V', shift: true }, { thai: 'ฺ', latin: 'B', shift: true }, { thai: '์', latin: 'N', shift: true }, 
-      { thai: '?', latin: '?', shift: true }, { thai: 'ฒ', latin: '.', shift: true }, { thai: 'ฬ', latin: '/', shift: true }, 
-      { thai: 'ฝ', latin: '§', shift: true }, { thai: 'ฦ', latin: '§', shift: true }
-    ],
-    space: { thai: ' ', latin: 'espace', shift: false }
-  };
 
   const [completedLessons, setCompletedLessons] = useState(loadProgressFromLocalStorage()?.completedLessons || [])
   const [lessonStats, setLessonStats] = useState(loadProgressFromLocalStorage()?.lessonStats || {})
@@ -1067,17 +1015,17 @@ function App() {
 
         <div className="card bg-base-100 shadow-xl mb-8 p-6">
           <div className="card-body text-center">
-            <div className="text-lg mb-2">Écrivez ce mot :</div>
+            <div className="text-xl mb-4">Écrivez ce mot :</div>
 
             <div className="flex justify-center gap-4 mb-4">
-              <div className="badge badge-lg">{currentWord.phonetic}</div>
-              <div className="badge badge-lg badge-neutral">{currentWord.french}</div>
+              <div className="badge badge-lg text-base">{currentWord.phonetic}</div>
+              <div className="badge badge-lg badge-neutral text-base">{currentWord.french}</div>
             </div>
 
-            <div className="text-2xl text-base-content opacity-50 mb-6">{currentWord.thai}</div>
+            <div className="text-3xl text-base-content opacity-50 mb-8">{currentWord.thai}</div>
 
             <div className="flex flex-col gap-4 items-center">
-              <div className="text-4xl font-bold min-h-16">
+              <div className="text-5xl font-bold min-h-16">
                 {wordCompleted ? (
                   <span className="text-success">✓ {currentWord.thai}</span>
                 ) : (
@@ -1098,12 +1046,12 @@ function App() {
               />
 
               {errorMessage && (
-                <div className="badge badge-error mt-2">{errorMessage}</div>
+                <div className="badge badge-error mt-2 text-base p-3">{errorMessage}</div>
               )}
             </div>
 
             {wordCompleted && (
-              <button className="btn btn-success mt-4" onClick={getNextWord}>
+              <button className="btn btn-success mt-6 text-lg" onClick={getNextWord}>
                 Mot suivant
               </button>
             )}
@@ -1157,13 +1105,13 @@ function App() {
                         return (
                           <div
                             key={index}
-                            className={`key w-10 h-10 flex flex-col items-center justify-center rounded border ${
+                            className={`key w-14 h-14 flex flex-col items-center justify-center rounded border ${
                               isHighlighted
                                 ? 'bg-primary text-white font-bold'
                                 : 'bg-base-200'
                             }`}
                           >
-                            <div className="text-sm font-bold">
+                            <div className="text-lg font-bold">
                               {key.thai}
                             </div>
                             <div className="text-xs opacity-70">
@@ -1445,17 +1393,17 @@ function App() {
 
         <div className="card bg-base-100 shadow-xl mb-8 p-6">
           <div className="card-body text-center">
-            <div className="text-lg mb-2">Mémorisez ce mot :</div>
+            <div className="text-xl mb-4">Mémorisez ce mot :</div>
 
             <div className="flex justify-center gap-4 mb-4">
-              <div className="badge badge-lg">{targetWord.phonetic}</div>
-              <div className="badge badge-lg badge-neutral">{targetWord.french}</div>
+              <div className="badge badge-lg text-base">{targetWord.phonetic}</div>
+              <div className="badge badge-lg badge-neutral text-base">{targetWord.french}</div>
             </div>
 
-            <div className="text-2xl text-base-content opacity-50 mb-6">{targetWord.thai}</div>
+            <div className="text-3xl text-base-content opacity-50 mb-8">{targetWord.thai}</div>
 
             <div className="flex flex-col gap-4 items-center">
-              <div className="text-4xl font-bold min-h-16">
+              <div className="text-5xl font-bold min-h-16">
                 {completed ? (
                   <span className="text-success">✓ {targetWord.thai}</span>
                 ) : (
@@ -1476,7 +1424,7 @@ function App() {
               />
 
               {showHint && keyboardHighlight && (
-                <div className="alert alert-info mt-2">
+                <div className="alert alert-info mt-2 text-base">
                   <div>
                     {keyboardHighlight.shift ? (
                       <span><strong>Appuyez sur MAJ (Shift) + {thaiKeyboard[keyboardHighlight.row][keyboardHighlight.index].latin}</strong> pour saisir {targetWord.thai.split('')[memoryExercise.currentKeyIndex]}</span>
@@ -1489,7 +1437,7 @@ function App() {
             </div>
 
             {completed && (
-              <button className="btn btn-success mt-4" onClick={nextMemoryWord}>
+              <button className="btn btn-success mt-6 text-lg" onClick={nextMemoryWord}>
                 Mot suivant
               </button>
             )}
@@ -1531,13 +1479,13 @@ function App() {
                         return (
                           <div
                             key={index}
-                            className={`key w-10 h-10 flex flex-col items-center justify-center rounded border ${
+                            className={`key w-14 h-14 flex flex-col items-center justify-center rounded border ${
                               isHighlighted
                                 ? 'bg-primary text-white font-bold'
                                 : 'bg-base-200'
                             }`}
                           >
-                            <div className="text-sm font-bold">
+                            <div className="text-lg font-bold">
                               {key.thai}
                             </div>
                             <div className="text-xs opacity-70">
